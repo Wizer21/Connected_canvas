@@ -1,6 +1,6 @@
 #pragma once
 #include "stdafx.h"
-#include "HTTPDownloader.hpp"
+#include "ThreadRequest.h"
 
 class SUtils
 {

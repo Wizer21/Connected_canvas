@@ -1,11 +1,10 @@
-#include "HTTPDownloader.hpp"
+#include "ThreadRequest.h"
 #include <iostream>
 #include <sstream>
 
 #define CURL_STATICLIB
-#include <curl\curl.h>
+#include <curl.h>
 
-// UTIL FUNCTION
 size_t write_data(void* ptr, size_t size, size_t nmemb, void* stream)
 {
   std::string data((const char*)ptr, (size_t)size * nmemb);
@@ -13,27 +12,22 @@ size_t write_data(void* ptr, size_t size, size_t nmemb, void* stream)
   return size * nmemb;
 }
 
-HTTPDownloader::HTTPDownloader(const QString& aURL, QWidget* aParent)
-  : QThread(aParent)
-  , mURL(aURL.toStdString())
+ThreadRequest::ThreadRequest(const std::string newUrl, QWidget* parent)
+  : QThread(parent)
+  , myUrl(newUrl)
   , curl(curl_easy_init())
 {
 }
 
-HTTPDownloader::~HTTPDownloader()
+void ThreadRequest::run()
 {
-  curl_easy_cleanup(curl);
+  emit resultRequest(QString::fromStdString(this->download()));
 }
 
-void HTTPDownloader::run()
-{
-  emit resultReady(QString::fromStdString(this->download()));
-}
-
-std::string HTTPDownloader::download()
+std::string ThreadRequest::download()
 {
   // Basic fetching setup
-  curl_easy_setopt(curl, CURLOPT_URL, this->mURL.c_str());
+  curl_easy_setopt(curl, CURLOPT_URL, this->myUrl.c_str());
   curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
   curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
   curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
@@ -54,4 +48,9 @@ std::string HTTPDownloader::download()
   }
 
   return out.str();
+}
+
+ThreadRequest::~ThreadRequest()
+{
+  curl_easy_cleanup(curl);
 }
