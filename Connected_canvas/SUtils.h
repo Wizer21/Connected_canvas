@@ -1,6 +1,5 @@
 #pragma once
 #include "stdafx.h"
-#include "ThreadRequest.h"
 
 class SUtils
 {
@@ -14,6 +13,5 @@ public:
 
 private:
   static SUtils* instance;
-  void newRequest();
   SUtils();
 };

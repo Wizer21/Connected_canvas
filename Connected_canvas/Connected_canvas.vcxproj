@@ -88,6 +88,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Requester.cpp" />
     <ClCompile Include="SUtils.cpp" />
     <ClCompile Include="ThreadRequest.cpp" />
     <QtRcc Include="Connected_canvas.qrc" />
@@ -97,6 +98,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="Requester.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SUtils.h" />
     <QtMoc Include="ThreadRequest.h" />

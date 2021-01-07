@@ -6,6 +6,7 @@ Connected_canvas::Connected_canvas(QWidget* parent)
 {
   ui.setupUi(this);
   build();
+  loadData();
 }
 
 void Connected_canvas::build()
@@ -15,7 +16,7 @@ void Connected_canvas::build()
 
   QWidget* widgetRoom = new QWidget(this);
   QGridLayout* layoutRoom = new QGridLayout(this);
-  QLabel* labelPseudo = new QLabel("peudo", this);
+  labelPseudo = new QLabel("peudo", this);
   QLabel* labelId = new QLabel("myid", this);
   QLabel* labelRoomId = new QLabel("roomid", this);
   QScrollArea* areaUserRoom = new QScrollArea(this);
@@ -39,4 +40,18 @@ void Connected_canvas::build()
   layoutRoom->addWidget(areaUserRoom, 2, 0, 1, 2);
   areaUserRoom->setWidget(widgetArea);
   widgetArea->setLayout(layoutArea);
+
+  // CONNECT TO DATA
+  req = new Requester;
+  connect(req, SIGNAL(transfertName(QString)), this, SLOT(setName(QString)));
+}
+
+void Connected_canvas::loadData()
+{
+  req->callRequest(this);
+}
+
+void Connected_canvas::setName(QString newName)
+{
+  labelPseudo->setText(newName);
 }
