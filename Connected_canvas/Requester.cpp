@@ -4,17 +4,17 @@ Requester::Requester()
 {
 }
 
-void Requester::callRequest(QMainWindow* parent)
+void Requester::logIn(QMainWindow* parent, QString pseudo, QString pass)
 {
-  std::string url{"http://localhost:8080/pseudo"};
+  std::string url = "http://localhost:8080/connection/" + pseudo.toStdString() + "/" + pass.toStdString();
   ThreadRequest* thread = new ThreadRequest(url, parent);
 
-  this->connect(thread, SIGNAL(resultRequest(QString)), this, SLOT(sendName(QString)));
+  this->connect(thread, SIGNAL(resultRequest(QString)), this, SLOT(sendLog(QString)));
   this->connect(thread, &ThreadRequest::finished, thread, &QObject::deleteLater);
   thread->start();
 }
 
-void Requester::sendName(QString name)
+void Requester::sendLog(QString name)
 {
-  emit transfertName(name);
+  emit transfertLog(name);
 }

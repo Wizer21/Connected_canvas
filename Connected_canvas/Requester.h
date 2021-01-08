@@ -8,11 +8,11 @@ class Requester : public QObject
 
 public:
   Requester();
-  void callRequest(QMainWindow* parent);
+  void logIn(QMainWindow* parent, QString pseudo, QString pass);
 
 public slots:
-  void sendName(QString);
+  void sendLog(QString);
 
 signals:
-  void transfertName(QString);
+  void transfertLog(QString);
 };

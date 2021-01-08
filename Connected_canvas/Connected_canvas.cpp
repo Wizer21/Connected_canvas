@@ -6,6 +6,7 @@ Connected_canvas::Connected_canvas(QWidget* parent)
 {
   ui.setupUi(this);
   build();
+  logIn();
   loadData();
 }
 
@@ -43,12 +44,27 @@ void Connected_canvas::build()
 
   // CONNECT TO DATA
   req = new Requester;
-  connect(req, SIGNAL(transfertName(QString)), this, SLOT(setName(QString)));
+  connect(req, SIGNAL(transfertLog(QString)), this, SLOT(setName(QString)));
 }
 
 void Connected_canvas::loadData()
 {
-  req->callRequest(this);
+}
+
+void logIn()
+{
+  auto logFile{QCoreApplication::applicationDirPath() + QDir::separator() + "log.json"};
+  if (QFile(logFile).exists())
+  {
+    QJsonDocument jsonDoc(QJsonDocument::fromJson(logFile.toUtf8()));
+    QJsonObject jsonObj = jsonDoc.object();
+
+    if (jsonObj.contains("pseudo") && jsonObj.contains("pass"))
+    {
+      jsonObj.langue = jsonObj["langue"].toString();
+      jsonObj.theme = jsonObj["theme"].toString();
+    }
+  }
 }
 
 void Connected_canvas::setName(QString newName)

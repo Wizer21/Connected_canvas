@@ -16,6 +16,7 @@ public slots:
 
 private:
   void build();
+  void logIn();
   void loadData();
   Ui_Connected_canvasClass ui;
 
