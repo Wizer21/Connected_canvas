@@ -17,6 +17,9 @@ public slots:
   void logInTriggered();
   void displayNewUser(QString);
 
+protected:
+  void closeEvent(QCloseEvent* event) override;
+
 private:
   void build();
   void logIn();

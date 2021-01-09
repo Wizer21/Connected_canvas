@@ -12,9 +12,9 @@ AccountLog::AccountLog()
   QVBoxLayout* layoutLog = new QVBoxLayout(this);
   QLabel* labelLogTitle = new QLabel(tr("Login"), this);
   QLabel* labelLogPseudo = new QLabel(tr("Pseudo"), this);
-  QLineEdit* lineEditLogPseudo = new QLineEdit(this);
+  lineEditLogPseudo = new QLineEdit(this);
   QLabel* labelLogPassword = new QLabel(tr("Password"), this);
-  QLineEdit* lineEditLogPassword = new QLineEdit(this);
+  lineEditLogPassword = new QLineEdit(this);
   QPushButton* buttonLogValidate = new QPushButton(tr("Validate"), this);
 
   QWidget* widgetNewTitle = new QWidget(this);
@@ -63,6 +63,7 @@ AccountLog::AccountLog()
   layoutNew->setAlignment(Qt::AlignTop);
 
   req = new Requester();
+  connect(buttonLogValidate, SIGNAL(clicked()), this, SLOT(loginClicked()));
   connect(buttonNewValidate, SIGNAL(clicked()), this, SLOT(newAccountClicked()));
   connect(buttonLog, SIGNAL(clicked()), this, SLOT(pageClicked()));
   connect(buttonNewAccount, SIGNAL(clicked()), this, SLOT(pageClicked()));
@@ -74,7 +75,7 @@ void AccountLog::newAccountClicked()
   QString pass = lineEditNewPassword->text();
   QString passBis = lineEditNewPasswordbis->text();
 
-  if (name.isEmpty() || pass.isEmpty() || name.isEmpty() || pass != passBis)
+  if (name.isEmpty() || pass.isEmpty() || passBis.isEmpty() || pass != passBis)
   {
     return;
   }
@@ -83,14 +84,39 @@ void AccountLog::newAccountClicked()
   req->creatAccount(this, name, pass);
 }
 
+void AccountLog::loginClicked()
+{
+  QString name = lineEditLogPseudo->text();
+  QString pass = lineEditLogPassword->text();
+
+  if (name.isEmpty() || pass.isEmpty())
+  {
+    return;
+  }
+
+  connect(req, SIGNAL(transfertRequest(QString)), this, SLOT(logInRequest(QString)));
+  req->logIn(this, name, pass);
+}
+
 void AccountLog::newAccountCreated(QString request)
 {
   request.replace("\n", "");
-  if (QString::compare(request, "done"))
+  if (!QString::compare(request, "done"))
   {
     return;
   }
   emit transfertCurrentUser(lineEditNewPseudo->text());
+  this->close();
+}
+
+void AccountLog::logInRequest(QString request)
+{
+  request.replace("\n", "");
+  if (!QString::compare(request, "false"))
+  {
+    return;
+  }
+  emit transfertCurrentUser(lineEditLogPseudo->text());
   this->close();
 }
 

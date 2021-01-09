@@ -86,3 +86,8 @@ void Connected_canvas::displayNewUser(QString newName)
 {
   labelPseudo->setText(newName);
 }
+
+void Connected_canvas::closeEvent(QCloseEvent* event)
+{
+  req->logOut(this, labelPseudo->text());
+}
