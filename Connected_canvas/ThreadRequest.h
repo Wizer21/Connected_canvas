@@ -6,7 +6,7 @@ class ThreadRequest : public QThread
   Q_OBJECT
 
 public:
-  ThreadRequest(const std::string newUrl, QMainWindow* parent);
+  ThreadRequest(const std::string newUrl, QWidget* parent);
   ~ThreadRequest();
 
 protected:

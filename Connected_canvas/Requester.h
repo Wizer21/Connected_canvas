@@ -8,11 +8,12 @@ class Requester : public QObject
 
 public:
   Requester();
-  void logIn(QMainWindow* parent, QString pseudo, QString pass);
+  void logIn(QWidget* parent, QString pseudo, QString pass);
+  void creatAccount(QWidget* parent, QString pseudo, QString pass);
 
 public slots:
   void sendLog(QString);
 
 signals:
-  void transfertLog(QString);
+  void transfertRequest(QString);
 };

@@ -7,11 +7,13 @@ Connected_canvas::Connected_canvas(QWidget* parent)
   ui.setupUi(this);
   build();
   logIn();
-  loadData();
 }
 
 void Connected_canvas::build()
 {
+  QMenuBar* barMain = new QMenuBar(this);
+  QAction* actionLogIn = new QAction(tr("Login"), this);
+
   QWidget* widgetCentral = new QWidget(this);
   QGridLayout* layoutMain = new QGridLayout(this);
 
@@ -24,14 +26,17 @@ void Connected_canvas::build()
   QWidget* widgetArea = new QWidget(this);
   QVBoxLayout* layoutArea = new QVBoxLayout(this);
 
-  QWidget* widgetDraw = new QWidget(this);
+  //QWidget* widgetDraw = new QWidget(this);
 
-  QWidget* widgetLayers = new QWidget(this);
+  //QWidget* widgetLayers = new QWidget(this);
 
-  QWidget* widgetCanvas = new QWidget(this);
+  //QWidget* widgetCanvas = new QWidget(this);
 
   this->setCentralWidget(widgetCentral);
   widgetCentral->setLayout(layoutMain);
+
+  this->setMenuBar(barMain);
+  barMain->addAction(actionLogIn);
 
   layoutMain->addWidget(widgetRoom, 0, 0);
   widgetRoom->setLayout(layoutRoom);
@@ -43,15 +48,13 @@ void Connected_canvas::build()
   widgetArea->setLayout(layoutArea);
 
   // CONNECT TO DATA
-  req = new Requester;
+  req = new Requester();
   connect(req, SIGNAL(transfertLog(QString)), this, SLOT(setName(QString)));
+
+  connect(actionLogIn, SIGNAL(triggered()), this, SLOT(logInTriggered()));
 }
 
-void Connected_canvas::loadData()
-{
-}
-
-void logIn()
+void Connected_canvas::logIn()
 {
   auto logFile{QCoreApplication::applicationDirPath() + QDir::separator() + "log.json"};
   if (QFile(logFile).exists())
@@ -59,15 +62,27 @@ void logIn()
     QJsonDocument jsonDoc(QJsonDocument::fromJson(logFile.toUtf8()));
     QJsonObject jsonObj = jsonDoc.object();
 
-    if (jsonObj.contains("pseudo") && jsonObj.contains("pass"))
-    {
-      jsonObj.langue = jsonObj["langue"].toString();
-      jsonObj.theme = jsonObj["theme"].toString();
-    }
+    //if (jsonObj.contains("pseudo") && jsonObj.contains("pass"))
+    //{
+    //  jsonObj.langue = jsonObj["langue"].toString();
+    //  jsonObj.theme = jsonObj["theme"].toString();
+    //}
   }
 }
 
 void Connected_canvas::setName(QString newName)
+{
+  labelPseudo->setText(newName);
+}
+
+void Connected_canvas::logInTriggered()
+{
+  AccountLog account;
+  connect(&account, SIGNAL(transfertCurrentUser(QString)), this, SLOT(displayNewUser(QString)));
+  account.exec();
+}
+
+void Connected_canvas::displayNewUser(QString newName)
 {
   labelPseudo->setText(newName);
 }

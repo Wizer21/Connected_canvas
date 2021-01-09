@@ -2,12 +2,11 @@
 
 AccountLog::AccountLog()
 {
-
   QGridLayout* layoutMain = new QGridLayout(this);
   QVBoxLayout* layoutButtons = new QVBoxLayout(this);
   QPushButton* buttonLog = new QPushButton(tr("Login"), this);
   QPushButton* buttonNewAccount = new QPushButton(tr("New Account"), this);
-  QStackedWidget* widgetStack = new QStackedWidget(this);
+  widgetStack = new QStackedWidget(this);
 
   QWidget* widgetLogTitle = new QWidget(this);
   QVBoxLayout* layoutLog = new QVBoxLayout(this);
@@ -39,8 +38,8 @@ AccountLog::AccountLog()
   layoutLog->addWidget(labelLogTitle);
   layoutLog->addWidget(labelLogPseudo);
   layoutLog->addWidget(lineEditLogPseudo);
-  layoutLog->addWidget(lineEditLogPseudo);
   layoutLog->addWidget(labelLogPassword);
+  layoutLog->addWidget(lineEditLogPassword);
   layoutLog->addWidget(buttonLogValidate);
 
   widgetNewTitle->setLayout(layoutNew);
@@ -57,10 +56,16 @@ AccountLog::AccountLog()
   widgetStack->addWidget(widgetNewTitle);
 
   widgetStack->setCurrentIndex(0);
+  buttonLog->setObjectName("0");
+  buttonNewAccount->setObjectName("1");
+  layoutButtons->setAlignment(Qt::AlignTop);
+  layoutLog->setAlignment(Qt::AlignTop);
+  layoutNew->setAlignment(Qt::AlignTop);
 
+  req = new Requester();
   connect(buttonNewValidate, SIGNAL(clicked()), this, SLOT(newAccountClicked()));
-
-  this->show();
+  connect(buttonLog, SIGNAL(clicked()), this, SLOT(pageClicked()));
+  connect(buttonNewAccount, SIGNAL(clicked()), this, SLOT(pageClicked()));
 }
 
 void AccountLog::newAccountClicked()
@@ -69,7 +74,35 @@ void AccountLog::newAccountClicked()
   QString pass = lineEditNewPassword->text();
   QString passBis = lineEditNewPasswordbis->text();
 
-  if (name.isEmpty() || pass.isEmpty() || name.isEmpty())
+  if (name.isEmpty() || pass.isEmpty() || name.isEmpty() || pass != passBis)
   {
+    return;
+  }
+
+  connect(req, SIGNAL(transfertRequest(QString)), this, SLOT(newAccountCreated(QString)));
+  req->creatAccount(this, name, pass);
+}
+
+void AccountLog::newAccountCreated(QString request)
+{
+  request.replace("\n", "");
+  if (QString::compare(request, "done"))
+  {
+    return;
+  }
+  emit transfertCurrentUser(lineEditNewPseudo->text());
+  this->close();
+}
+
+void AccountLog::pageClicked()
+{
+  QString id = sender()->objectName();
+  if (id == "0")
+  {
+    widgetStack->setCurrentIndex(0);
+  }
+  else
+  {
+    widgetStack->setCurrentIndex(1);
   }
 }

@@ -3,6 +3,7 @@
 #include "ui_Connected_canvas.h"
 #include "SUtils.h"
 #include "Requester.h"
+#include "AccountLog.h"
 
 class Connected_canvas : public QMainWindow
 {
@@ -13,11 +14,12 @@ public:
 
 public slots:
   void setName(QString);
+  void logInTriggered();
+  void displayNewUser(QString);
 
 private:
   void build();
   void logIn();
-  void loadData();
   Ui_Connected_canvasClass ui;
 
   Requester* req;

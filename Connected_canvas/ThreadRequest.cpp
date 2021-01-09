@@ -12,7 +12,7 @@ size_t write_data(void* ptr, size_t size, size_t nmemb, void* stream)
   return size * nmemb;
 }
 
-ThreadRequest::ThreadRequest(const std::string newUrl, QMainWindow* parent)
+ThreadRequest::ThreadRequest(const std::string newUrl, QWidget* parent)
   : QThread(parent)
   , myUrl(newUrl)
   , curl(curl_easy_init())
