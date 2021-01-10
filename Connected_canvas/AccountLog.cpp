@@ -101,7 +101,7 @@ void AccountLog::loginClicked()
 void AccountLog::newAccountCreated(QString request)
 {
   request.replace("\n", "");
-  if (!QString::compare(request, "done"))
+  if (request != "done")
   {
     return;
   }
@@ -112,7 +112,7 @@ void AccountLog::newAccountCreated(QString request)
 void AccountLog::logInRequest(QString request)
 {
   request.replace("\n", "");
-  if (!QString::compare(request, "false"))
+  if (request == "false")
   {
     return;
   }

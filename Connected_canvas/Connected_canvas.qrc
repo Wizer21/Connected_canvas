@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="Connected_canvas">
+    <qresource prefix="/Connected_canvas">
+        <file>files/theme.qss</file>
     </qresource>
 </RCC>

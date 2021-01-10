@@ -89,6 +89,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AccountLog.cpp" />
+    <ClCompile Include="Canvas.cpp" />
+    <ClCompile Include="PenBuilder.cpp" />
     <ClCompile Include="Requester.cpp" />
     <ClCompile Include="SUtils.cpp" />
     <ClCompile Include="ThreadRequest.cpp" />
@@ -101,6 +103,8 @@
   <ItemGroup>
     <QtMoc Include="Requester.h" />
     <QtMoc Include="AccountLog.h" />
+    <QtMoc Include="PenBuilder.h" />
+    <ClInclude Include="Canvas.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SUtils.h" />
     <QtMoc Include="ThreadRequest.h" />

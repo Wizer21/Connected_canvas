@@ -4,6 +4,8 @@
 #include "SUtils.h"
 #include "Requester.h"
 #include "AccountLog.h"
+#include "PenBuilder.h"
+#include "Canvas.h"
 
 class Connected_canvas : public QMainWindow
 {
@@ -27,4 +29,5 @@ private:
 
   Requester* req;
   QLabel* labelPseudo;
+  QPen* myPen;
 };

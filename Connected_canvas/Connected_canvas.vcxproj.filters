@@ -53,12 +53,21 @@
     <ClCompile Include="AccountLog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PenBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Canvas.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Canvas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -70,6 +79,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="AccountLog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="PenBuilder.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

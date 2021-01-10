@@ -26,11 +26,13 @@ void Connected_canvas::build()
   QWidget* widgetArea = new QWidget(this);
   QVBoxLayout* layoutArea = new QVBoxLayout(this);
 
-  //QWidget* widgetDraw = new QWidget(this);
+  myPen = new QPen();
+  PenBuilder* penBuilder = new PenBuilder(this, myPen);
 
   //QWidget* widgetLayers = new QWidget(this);
 
-  //QWidget* widgetCanvas = new QWidget(this);
+  //QGraphicsView* graphicViewMain = new QGraphicsView(this);
+  Canvas* sceneMain = new Canvas(this, myPen);
 
   this->setCentralWidget(widgetCentral);
   widgetCentral->setLayout(layoutMain);
@@ -46,6 +48,15 @@ void Connected_canvas::build()
   layoutRoom->addWidget(areaUserRoom, 2, 0, 1, 2);
   areaUserRoom->setWidget(widgetArea);
   widgetArea->setLayout(layoutArea);
+
+  layoutMain->addWidget(penBuilder, 1, 0);
+
+  //layoutMain->addWidget(graphicViewMain, 0, 1, 3, 1);
+  //graphicViewMain->setScene(sceneMain);
+  layoutMain->addWidget(sceneMain, 0, 1, 3, 1);
+
+  // THEME
+  //graphicViewMain->resize(1000, 1000);
 
   // CONNECT TO DATA
   req = new Requester();
