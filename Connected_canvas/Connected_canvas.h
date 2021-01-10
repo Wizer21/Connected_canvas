@@ -6,6 +6,7 @@
 #include "AccountLog.h"
 #include "PenBuilder.h"
 #include "Canvas.h"
+#include "Friends.h"
 
 class Connected_canvas : public QMainWindow
 {
@@ -17,6 +18,7 @@ public:
 public slots:
   void setName(QString);
   void logInTriggered();
+  void friendsTriggered();
   void displayNewUser(QString);
 
 protected:

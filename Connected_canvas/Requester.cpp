@@ -36,6 +36,28 @@ void Requester::logOut(QWidget* parent, QString pseudo)
   thread->wait();
 }
 
+void Requester::frienList(QWidget* parent, QString pseudo)
+{
+  std::string url = "http://localhost:8080/friendlist?pseudo=" + pseudo.toStdString();
+  ThreadRequest* thread = new ThreadRequest(url, parent);
+
+  this->connect(thread, SIGNAL(resultRequest(QString)), this, SLOT(sendLog(QString)));
+  this->connect(thread, &ThreadRequest::finished, thread, &QObject::deleteLater);
+  thread->start();
+  thread->wait();
+}
+
+void Requester::onlineUsers(QWidget* parent)
+{
+  std::string url = "http://localhost:8080/onlineusers";
+  ThreadRequest* thread = new ThreadRequest(url, parent);
+
+  this->connect(thread, SIGNAL(resultRequest(QString)), this, SLOT(sendLog(QString)));
+  this->connect(thread, &ThreadRequest::finished, thread, &QObject::deleteLater);
+  thread->start();
+  thread->wait();
+}
+
 void Requester::sendLog(QString name)
 {
   emit transfertRequest(name);

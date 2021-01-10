@@ -11,6 +11,8 @@ public:
   void creatAccount(QWidget* parent, QString pseudo, QString pass);
   void logIn(QWidget* parent, QString pseudo, QString pass);
   void logOut(QWidget* parent, QString pseudo);
+  void frienList(QWidget* parent, QString pseudo);
+  void onlineUsers(QWidget* parent);
 
 public slots:
   void sendLog(QString);

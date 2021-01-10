@@ -14,13 +14,14 @@ void Connected_canvas::build()
 {
   QMenuBar* barMain = new QMenuBar(this);
   QAction* actionLogIn = new QAction(tr("Login"), this);
+  QAction* actionFriends = new QAction(tr("Friends"), this);
 
   QWidget* widgetCentral = new QWidget(this);
   QGridLayout* layoutMain = new QGridLayout(this);
 
   QWidget* widgetRoom = new QWidget(this);
   QGridLayout* layoutRoom = new QGridLayout(this);
-  labelPseudo = new QLabel("peudo", this);
+  labelPseudo = new QLabel("Offline", this);
   QLabel* labelId = new QLabel("myid", this);
   QLabel* labelRoomId = new QLabel("roomid", this);
   QScrollArea* areaUserRoom = new QScrollArea(this);
@@ -39,6 +40,7 @@ void Connected_canvas::build()
 
   this->setMenuBar(barMain);
   barMain->addAction(actionLogIn);
+  barMain->addAction(actionFriends);
 
   layoutMain->addWidget(widgetRoom, 0, 0);
   widgetRoom->setLayout(layoutRoom);
@@ -63,6 +65,7 @@ void Connected_canvas::build()
   connect(req, SIGNAL(transfertLog(QString)), this, SLOT(setName(QString)));
 
   connect(actionLogIn, SIGNAL(triggered()), this, SLOT(logInTriggered()));
+  connect(actionFriends, SIGNAL(triggered()), this, SLOT(friendsTriggered()));
 }
 
 void Connected_canvas::logIn()
@@ -91,6 +94,12 @@ void Connected_canvas::logInTriggered()
   AccountLog account;
   connect(&account, SIGNAL(transfertCurrentUser(QString)), this, SLOT(displayNewUser(QString)));
   account.exec();
+}
+
+void Connected_canvas::friendsTriggered()
+{
+  Friends friends(this, labelPseudo->text());
+  friends.exec();
 }
 
 void Connected_canvas::displayNewUser(QString newName)
