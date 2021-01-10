@@ -7,6 +7,7 @@ Connected_canvas::Connected_canvas(QWidget* parent)
   ui.setupUi(this);
   build();
   logIn();
+  this->resize(1500, 1000);
 }
 
 void Connected_canvas::build()
@@ -31,7 +32,6 @@ void Connected_canvas::build()
 
   //QWidget* widgetLayers = new QWidget(this);
 
-  //QGraphicsView* graphicViewMain = new QGraphicsView(this);
   Canvas* sceneMain = new Canvas(this, myPen);
 
   this->setCentralWidget(widgetCentral);
@@ -51,12 +51,12 @@ void Connected_canvas::build()
 
   layoutMain->addWidget(penBuilder, 1, 0);
 
-  //layoutMain->addWidget(graphicViewMain, 0, 1, 3, 1);
-  //graphicViewMain->setScene(sceneMain);
-  layoutMain->addWidget(sceneMain, 0, 1, 3, 1);
+  layoutMain->addWidget(sceneMain, 0, 1, 2, 1);
 
   // THEME
-  //graphicViewMain->resize(1000, 1000);
+  layoutMain->setColumnStretch(0, 0);
+  layoutMain->setColumnStretch(1, 1);
+  sceneMain->resize(1000, 1000);
 
   // CONNECT TO DATA
   req = new Requester();
@@ -100,5 +100,9 @@ void Connected_canvas::displayNewUser(QString newName)
 
 void Connected_canvas::closeEvent(QCloseEvent* event)
 {
+  QMessageBox box(QMessageBox::NoIcon, " ", tr("Disconnecting...\nThis can take few seconds."), QMessageBox::NoButton, this, Qt::Dialog);
+  box.show();
+
+  qApp->processEvents();
   req->logOut(this, labelPseudo->text());
 }

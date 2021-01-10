@@ -39,6 +39,7 @@ std::string ThreadRequest::download()
   curl_easy_setopt(curl, CURLOPT_WRITEDATA, &out);
 
   // Perform the request and get the return code
+
   CURLcode res{curl_easy_perform(curl)};
 
   if (res != CURLE_OK)

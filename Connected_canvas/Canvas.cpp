@@ -3,20 +3,18 @@
 Canvas::Canvas(QWidget* parent, QPen* new_userPen)
   : QWidget(parent)
 {
-
+  setAttribute(Qt::WA_StaticContents);
   userPen = new_userPen;
   isOldPosNull = true;
-  painter = new QPainter(this);
 
-  this->resize(1000, 1000);
+  image = new QImage(1000, 1000, QImage::Format_RGB32);
 }
 
 void Canvas::mouseMoveEvent(QMouseEvent* event)
 {
   if (event->buttons() == Qt::LeftButton)
   {
-    currentPos = event->pos();
-    this->repaint();
+    draw(event->pos());
   }
 }
 
@@ -27,15 +25,23 @@ void Canvas::mouseReleaseEvent(QMouseEvent* event)
 
 void Canvas::paintEvent(QPaintEvent* event)
 {
-  painter->begin(this);
-  painter->restore();
-  painter->setPen(*userPen);
+  QPainter painter(this);
+  QRect dirtyRect = event->rect();
+  painter.drawImage(dirtyRect, *image, dirtyRect);
+}
+
+void Canvas::draw(const QPointF currentPos)
+{
+  QPainter painter(image);
+  painter.setPen(*userPen);
 
   if (isOldPosNull)
   {
     oldPos = currentPos;
   }
-  painter->drawLine(oldPos.x(), oldPos.y(), currentPos.x(), currentPos.y());
-  painter->save();
-  painter->end();
+  painter.drawLine(oldPos.x(), oldPos.y(), currentPos.x(), currentPos.y());
+  oldPos = currentPos;
+  isOldPosNull = false;
+
+  update();
 }

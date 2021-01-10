@@ -12,6 +12,7 @@ void Requester::creatAccount(QWidget* parent, QString pseudo, QString pass)
   this->connect(thread, SIGNAL(resultRequest(QString)), this, SLOT(sendLog(QString)));
   this->connect(thread, &ThreadRequest::finished, thread, &QObject::deleteLater);
   thread->start();
+  thread->wait();
 }
 
 void Requester::logIn(QWidget* parent, QString pseudo, QString pass)
@@ -22,6 +23,7 @@ void Requester::logIn(QWidget* parent, QString pseudo, QString pass)
   this->connect(thread, SIGNAL(resultRequest(QString)), this, SLOT(sendLog(QString)));
   this->connect(thread, &ThreadRequest::finished, thread, &QObject::deleteLater);
   thread->start();
+  thread->wait();
 }
 
 void Requester::logOut(QWidget* parent, QString pseudo)
@@ -31,6 +33,7 @@ void Requester::logOut(QWidget* parent, QString pseudo)
 
   this->connect(thread, &ThreadRequest::finished, thread, &QObject::deleteLater);
   thread->start();
+  thread->wait();
 }
 
 void Requester::sendLog(QString name)

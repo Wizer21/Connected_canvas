@@ -90,6 +90,7 @@
   <ItemGroup>
     <ClCompile Include="AccountLog.cpp" />
     <ClCompile Include="Canvas.cpp" />
+    <ClCompile Include="ColorPicker.cpp" />
     <ClCompile Include="PenBuilder.cpp" />
     <ClCompile Include="Requester.cpp" />
     <ClCompile Include="SUtils.cpp" />
@@ -105,6 +106,7 @@
     <QtMoc Include="AccountLog.h" />
     <QtMoc Include="PenBuilder.h" />
     <ClInclude Include="Canvas.h" />
+    <QtMoc Include="ColorPicker.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SUtils.h" />
     <QtMoc Include="ThreadRequest.h" />

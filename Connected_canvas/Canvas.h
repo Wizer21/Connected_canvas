@@ -16,6 +16,7 @@ private:
   QPen* userPen;
   QPointF oldPos;
   QPointF currentPos;
-  QPainter* painter;
+  QImage* image;
   bool isOldPosNull;
+  void draw(const QPointF currentPos);
 };
