@@ -15,6 +15,7 @@ void Connected_canvas::build()
   QMenuBar* barMain = new QMenuBar(this);
   QAction* actionLogIn = new QAction(tr("Login"), this);
   QAction* actionFriends = new QAction(tr("Friends"), this);
+  QAction* actionRooms = new QAction(tr("Rooms"), this);
 
   QWidget* widgetCentral = new QWidget(this);
   QGridLayout* layoutMain = new QGridLayout(this);
@@ -41,6 +42,7 @@ void Connected_canvas::build()
   this->setMenuBar(barMain);
   barMain->addAction(actionLogIn);
   barMain->addAction(actionFriends);
+  barMain->addAction(actionRooms);
 
   layoutMain->addWidget(widgetRoom, 0, 0);
   widgetRoom->setLayout(layoutRoom);
@@ -66,6 +68,7 @@ void Connected_canvas::build()
 
   connect(actionLogIn, SIGNAL(triggered()), this, SLOT(logInTriggered()));
   connect(actionFriends, SIGNAL(triggered()), this, SLOT(friendsTriggered()));
+  connect(actionRooms, SIGNAL(triggered()), this, SLOT(roomsTriggered()));
 }
 
 void Connected_canvas::logIn()
@@ -102,6 +105,12 @@ void Connected_canvas::friendsTriggered()
   friends.exec();
 }
 
+void Connected_canvas::roomsTriggered()
+{
+  Rooms rooms(this);
+  rooms.exec();
+}
+
 void Connected_canvas::displayNewUser(QString newName)
 {
   labelPseudo->setText(newName);
@@ -109,9 +118,9 @@ void Connected_canvas::displayNewUser(QString newName)
 
 void Connected_canvas::closeEvent(QCloseEvent* event)
 {
-  QMessageBox box(QMessageBox::NoIcon, " ", tr("Disconnecting...\nThis can take few seconds."), QMessageBox::NoButton, this, Qt::Dialog);
-  box.show();
-
+  //QMessageBox box(QMessageBox::NoIcon, " ", tr("Disconnecting...\nThis can take few seconds."), QMessageBox::NoButton, this, Qt::Dialog);
+  //box.show();
+  this->hide();
   qApp->processEvents();
   req->logOut(this, labelPseudo->text());
 }

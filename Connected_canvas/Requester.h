@@ -13,6 +13,7 @@ public:
   void logOut(QWidget* parent, QString pseudo);
   void frienList(QWidget* parent, QString pseudo);
   void onlineUsers(QWidget* parent);
+  void createRoom(QWidget* parent, QString name, bool isLock, QString password);
 
 public slots:
   void sendLog(QString);

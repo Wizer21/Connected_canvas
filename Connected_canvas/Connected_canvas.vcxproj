@@ -94,6 +94,7 @@
     <ClCompile Include="Friends.cpp" />
     <ClCompile Include="PenBuilder.cpp" />
     <ClCompile Include="Requester.cpp" />
+    <ClCompile Include="Rooms.cpp" />
     <ClCompile Include="SUtils.cpp" />
     <ClCompile Include="ThreadRequest.cpp" />
     <QtRcc Include="Connected_canvas.qrc" />
@@ -109,6 +110,7 @@
     <ClInclude Include="Canvas.h" />
     <QtMoc Include="ColorPicker.h" />
     <QtMoc Include="Friends.h" />
+    <ClInclude Include="Rooms.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SUtils.h" />
     <QtMoc Include="ThreadRequest.h" />
