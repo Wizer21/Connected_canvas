@@ -12,7 +12,6 @@ void Requester::creatAccount(QWidget* parent, QString pseudo, QString pass)
   this->connect(thread, SIGNAL(resultRequest(QString)), this, SLOT(sendLog(QString)));
   this->connect(thread, &ThreadRequest::finished, thread, &QObject::deleteLater);
   thread->start();
-  thread->wait();
 }
 
 void Requester::logIn(QWidget* parent, QString pseudo, QString pass)
@@ -23,7 +22,6 @@ void Requester::logIn(QWidget* parent, QString pseudo, QString pass)
   this->connect(thread, SIGNAL(resultRequest(QString)), this, SLOT(sendLog(QString)));
   this->connect(thread, &ThreadRequest::finished, thread, &QObject::deleteLater);
   thread->start();
-  thread->wait();
 }
 
 void Requester::logOut(QWidget* parent, QString pseudo)
@@ -44,7 +42,6 @@ void Requester::frienList(QWidget* parent, QString pseudo)
   this->connect(thread, SIGNAL(resultRequest(QString)), this, SLOT(sendLog(QString)));
   this->connect(thread, &ThreadRequest::finished, thread, &QObject::deleteLater);
   thread->start();
-  thread->wait();
 }
 
 void Requester::onlineUsers(QWidget* parent)
@@ -55,18 +52,16 @@ void Requester::onlineUsers(QWidget* parent)
   this->connect(thread, SIGNAL(resultRequest(QString)), this, SLOT(sendLog(QString)));
   this->connect(thread, &ThreadRequest::finished, thread, &QObject::deleteLater);
   thread->start();
-  thread->wait();
 }
 
 void Requester::createRoom(QWidget* parent, QString name, bool isLock, QString password)
 {
-  std::string url = "http://localhost:8080/createroom?name=" + name.toStdString() + "&lock=" + QString::number(isLock).toStdString() + "&pass=;" + password.toStdString();
+  std::string url = "http://localhost:8080/createroom?name=" + name.toStdString() + "&lock=" + QString::number(isLock).toStdString() + "&pass=" + password.toStdString();
   ThreadRequest* thread = new ThreadRequest(url, parent);
 
   this->connect(thread, SIGNAL(resultRequest(QString)), this, SLOT(sendLog(QString)));
   this->connect(thread, &ThreadRequest::finished, thread, &QObject::deleteLater);
   thread->start();
-  thread->wait();
 }
 
 void Requester::sendLog(QString name)

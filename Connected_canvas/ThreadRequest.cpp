@@ -14,9 +14,10 @@ size_t write_data(void* ptr, size_t size, size_t nmemb, void* stream)
 
 ThreadRequest::ThreadRequest(const std::string newUrl, QWidget* parent)
   : QThread(parent)
-  , myUrl(newUrl)
   , curl(curl_easy_init())
 {
+  QUrl url(QString::fromStdString(newUrl), QUrl::TolerantMode);
+  myUrl = url.toEncoded();
 }
 
 void ThreadRequest::run()

@@ -11,6 +11,7 @@ void Rooms::build()
 {
   QVBoxLayout* layout = new QVBoxLayout(this);
   QLabel* title = new QLabel("Rooms", this);
+  currentRoom = new QLabel("Current room: None", this);
   QScrollArea* area = new QScrollArea(this);
   QWidget* widgetArea = new QWidget(this);
   QVBoxLayout* layoutArea = new QVBoxLayout(this);
@@ -19,6 +20,7 @@ void Rooms::build()
 
   this->setLayout(layout);
   layout->addWidget(title);
+  layout->addWidget(currentRoom);
   layout->addWidget(area);
   area->setWidget(widgetArea);
   widgetArea->setLayout(layoutArea);
@@ -36,4 +38,12 @@ void Rooms::loadRooms()
 
 void Rooms::newRoomClicked()
 {
+  NewRoomDialog* room = new NewRoomDialog(this);
+  connect(room, SIGNAL(newCurrentRoom(QString)), this, SLOT(setCurrentRoom(QString)));
+  room->exec();
+}
+
+void Rooms::setCurrentRoom(QString roomName)
+{
+  currentRoom->setText(roomName);
 }

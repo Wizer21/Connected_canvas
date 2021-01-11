@@ -48,6 +48,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
@@ -92,6 +102,7 @@
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="ColorPicker.cpp" />
     <ClCompile Include="Friends.cpp" />
+    <ClCompile Include="NewRoomDialog.cpp" />
     <ClCompile Include="PenBuilder.cpp" />
     <ClCompile Include="Requester.cpp" />
     <ClCompile Include="Rooms.cpp" />
@@ -110,7 +121,8 @@
     <ClInclude Include="Canvas.h" />
     <QtMoc Include="ColorPicker.h" />
     <QtMoc Include="Friends.h" />
-    <ClInclude Include="Rooms.h" />
+    <QtMoc Include="Rooms.h" />
+    <QtMoc Include="NewRoomDialog.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SUtils.h" />
     <QtMoc Include="ThreadRequest.h" />

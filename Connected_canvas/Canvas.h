@@ -15,7 +15,6 @@ protected:
 private:
   QPen* userPen;
   QPointF oldPos;
-  QPointF currentPos;
   QImage* image;
   bool isOldPosNull;
   void draw(const QPointF currentPos);
