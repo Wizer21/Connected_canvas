@@ -14,6 +14,9 @@ public slots:
   void newRoomClicked();
   void setCurrentRoom(QString);
 
+signals:
+  void sendNewRoom(QString);
+
 private:
   void build();
   void loadRooms();

@@ -99,9 +99,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AccountLog.cpp" />
-    <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="ColorPicker.cpp" />
     <ClCompile Include="Friends.cpp" />
+    <ClCompile Include="GraphicScene.cpp" />
     <ClCompile Include="NewRoomDialog.cpp" />
     <ClCompile Include="PenBuilder.cpp" />
     <ClCompile Include="Requester.cpp" />
@@ -118,11 +118,11 @@
     <QtMoc Include="Requester.h" />
     <QtMoc Include="AccountLog.h" />
     <QtMoc Include="PenBuilder.h" />
-    <ClInclude Include="Canvas.h" />
     <QtMoc Include="ColorPicker.h" />
     <QtMoc Include="Friends.h" />
     <QtMoc Include="Rooms.h" />
     <QtMoc Include="NewRoomDialog.h" />
+    <ClInclude Include="GraphicScene.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SUtils.h" />
     <QtMoc Include="ThreadRequest.h" />

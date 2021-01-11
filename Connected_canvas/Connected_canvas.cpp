@@ -33,8 +33,8 @@ void Connected_canvas::build()
   PenBuilder* penBuilder = new PenBuilder(this, myPen);
 
   //QWidget* widgetLayers = new QWidget(this);
-
-  Canvas* sceneMain = new Canvas(this, myPen);
+  QGraphicsView* viewMain = new QGraphicsView(this);
+  sceneMain = new GraphicScene(this, myPen);
 
   this->setCentralWidget(widgetCentral);
   widgetCentral->setLayout(layoutMain);
@@ -55,12 +55,13 @@ void Connected_canvas::build()
 
   layoutMain->addWidget(penBuilder, 1, 0);
 
-  layoutMain->addWidget(sceneMain, 0, 1, 2, 1);
+  layoutMain->addWidget(viewMain, 0, 1, 2, 1);
 
   // THEME
+  viewMain->setScene(sceneMain);
   layoutMain->setColumnStretch(0, 0);
   layoutMain->setColumnStretch(1, 1);
-  sceneMain->resize(1000, 1000);
+  viewMain->setFixedSize(1000, 1000);
 
   // CONNECT TO DATA
   req = new Requester();
@@ -107,8 +108,9 @@ void Connected_canvas::friendsTriggered()
 
 void Connected_canvas::roomsTriggered()
 {
-  Rooms rooms(this);
-  rooms.exec();
+  Rooms* rooms = new Rooms(this);
+  connect(rooms, SIGNAL(sendNewRoom(QString)), this, SLOT(joinedRoom(QString)));
+  rooms->exec();
 }
 
 void Connected_canvas::displayNewUser(QString newName)
@@ -123,4 +125,9 @@ void Connected_canvas::closeEvent(QCloseEvent* event)
   this->hide();
   qApp->processEvents();
   req->logOut(this, labelPseudo->text());
+}
+
+void Connected_canvas::joinedRoom(QString newRoomName)
+{
+  sceneMain->joinedRoom(newRoomName);
 }

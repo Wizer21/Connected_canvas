@@ -5,9 +5,9 @@
 #include "Requester.h"
 #include "AccountLog.h"
 #include "PenBuilder.h"
-#include "Canvas.h"
 #include "Friends.h"
 #include "Rooms.h"
+#include "GraphicScene.h"
 
 class Connected_canvas : public QMainWindow
 {
@@ -22,6 +22,7 @@ public slots:
   void friendsTriggered();
   void roomsTriggered();
   void displayNewUser(QString);
+  void joinedRoom(QString);
 
 protected:
   void closeEvent(QCloseEvent* event) override;
@@ -31,6 +32,7 @@ private:
   void logIn();
   Ui_Connected_canvasClass ui;
 
+  GraphicScene* sceneMain;
   Requester* req;
   QLabel* labelPseudo;
   QPen* myPen;

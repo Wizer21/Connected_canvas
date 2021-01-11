@@ -46,4 +46,5 @@ void Rooms::newRoomClicked()
 void Rooms::setCurrentRoom(QString roomName)
 {
   currentRoom->setText(roomName);
+  emit sendNewRoom(roomName);
 }
