@@ -64,6 +64,16 @@ void Requester::createRoom(QWidget* parent, QString name, bool isLock, QString p
   thread->start();
 }
 
+void Requester::updateRoom(QWidget* parent, QString roomName, QString userName, std::vector < pixelMap, int iterator)
+{
+  std::string url = "http://localhost:8080/createroom?name=" + name.toStdString() + "&lock=" + QString::number(isLock).toStdString() + "&pass=" + password.toStdString();
+  ThreadRequest* thread = new ThreadRequest(url, parent);
+
+  this->connect(thread, SIGNAL(resultRequest(QString)), this, SLOT(sendLog(QString)));
+  this->connect(thread, &ThreadRequest::finished, thread, &QObject::deleteLater);
+  thread->start();
+}
+
 void Requester::sendLog(QString name)
 {
   emit transfertRequest(name);

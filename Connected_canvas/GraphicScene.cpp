@@ -1,8 +1,16 @@
 #include "GraphicScene.h"
 
-GraphicScene::GraphicScene(QWidget* parent, QPen* new_userPen)
-  : QGraphicsScene(parent)
+Thread::Thread(QWidget* parent, QString newRoomName)
+  : QThread(parent)
 {
+  roomName = newRoomName;
+  req = new Requester();
+}
+
+GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen)
+  : QGraphicsScene(new_parent)
+{
+  parent = new_parent;
   userPen = new_userPen;
   isOldPosNull = true;
   currentRoom = "";
@@ -15,7 +23,6 @@ void GraphicScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
   if (event->buttons() == Qt::LeftButton)
   {
-    qDebug() << event->pos();
     draw(event->scenePos());
   }
 }
@@ -25,17 +32,8 @@ void GraphicScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
   isOldPosNull = true;
 }
 
-//void GraphicScene::paintEvent(QPaintEvent* event)
-//{
-//  QPainter painter(this);
-//  QRect dirtyRect = event->rect();
-//  painter.drawImage(dirtyRect, *image, dirtyRect);
-//}
-
 void GraphicScene::draw(const QPointF currentPos)
 {
-  qDebug() << currentPos;
-
   QPainter painter(image);
   painter.setPen(*userPen);
 
@@ -55,4 +53,5 @@ void GraphicScene::draw(const QPointF currentPos)
 void GraphicScene::joinedRoom(QString roomName)
 {
   currentRoom = roomName;
+  Thread th(parent, roomName);
 }

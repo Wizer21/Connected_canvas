@@ -1,6 +1,16 @@
 #pragma once
 #include "stdafx.h"
-#include <QDebug>
+#include "Requester.h"
+
+class Thread : public QThread
+{
+public:
+  Thread(QWidget* parent, QString roomName);
+
+private:
+  QString roomName;
+  Requester* req;
+};
 
 class GraphicScene : public QGraphicsScene
 {
@@ -13,6 +23,7 @@ protected:
   void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
 
 private:
+  QWidget* parent;
   QPen* userPen;
   QPointF oldPos;
   QImage* image;
