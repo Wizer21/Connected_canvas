@@ -4,19 +4,31 @@
 
 class Thread : public QThread
 {
+  Q_OBJECT
+
 public:
-  Thread(QWidget* parent, QString roomName);
+  Thread(QWidget* parent, QString roomName, QString userName, QImage* image);
+
+public slots:
+  void roomRequest(QString);
 
 private:
+  QString imageToB64(QImage image);
+  QImage b64ToImage(char* base64Array);
+
   QString roomName;
   Requester* req;
+  int iterator;
+  QImage* userImage;
+  std::vector<std::pair<QString, int>> userListIterator;
+  std::map<QString, QImage> userListImage;
 };
 
 class GraphicScene : public QGraphicsScene
 {
 public:
   GraphicScene(QWidget* parent, QPen* userPen);
-  void joinedRoom(QString roomName);
+  void joinedRoom(QString roomName, QString userName);
 
 protected:
   void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
@@ -29,6 +41,5 @@ private:
   QImage* image;
   bool isOldPosNull;
 
-  QString currentRoom;
   void draw(const QPointF currentPos);
 };

@@ -14,6 +14,7 @@ public:
   void frienList(QWidget* parent, QString pseudo);
   void onlineUsers(QWidget* parent);
   void createRoom(QWidget* parent, QString name, bool isLock, QString password);
+  void updateRoom(QWidget* parent, QString roomName, QString userName, QString base64, int iterator);
 
 public slots:
   void sendLog(QString);

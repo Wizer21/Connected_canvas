@@ -122,7 +122,7 @@
     <QtMoc Include="Friends.h" />
     <QtMoc Include="Rooms.h" />
     <QtMoc Include="NewRoomDialog.h" />
-    <ClInclude Include="GraphicScene.h" />
+    <QtMoc Include="GraphicScene.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SUtils.h" />
     <QtMoc Include="ThreadRequest.h" />

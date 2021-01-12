@@ -79,9 +79,6 @@
     <ClInclude Include="SUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ThreadRequest.h">
@@ -106,6 +103,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="NewRoomDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="GraphicScene.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

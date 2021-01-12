@@ -5,6 +5,8 @@ Connected_canvas::Connected_canvas(QWidget* parent)
   : QMainWindow(parent)
 {
   ui.setupUi(this);
+  userName = "";
+
   build();
   logIn();
   this->resize(1500, 1000);
@@ -91,6 +93,7 @@ void Connected_canvas::logIn()
 void Connected_canvas::setName(QString newName)
 {
   labelPseudo->setText(newName);
+  userName = newName;
 }
 
 void Connected_canvas::logInTriggered()
@@ -116,6 +119,7 @@ void Connected_canvas::roomsTriggered()
 void Connected_canvas::displayNewUser(QString newName)
 {
   labelPseudo->setText(newName);
+  userName = newName;
 }
 
 void Connected_canvas::closeEvent(QCloseEvent* event)
@@ -129,5 +133,5 @@ void Connected_canvas::closeEvent(QCloseEvent* event)
 
 void Connected_canvas::joinedRoom(QString newRoomName)
 {
-  sceneMain->joinedRoom(newRoomName);
+  sceneMain->joinedRoom(newRoomName, userName);
 }

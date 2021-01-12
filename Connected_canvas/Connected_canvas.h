@@ -36,4 +36,6 @@ private:
   Requester* req;
   QLabel* labelPseudo;
   QPen* myPen;
+
+  QString userName;
 };
