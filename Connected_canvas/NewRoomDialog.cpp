@@ -62,24 +62,18 @@ void NewRoomDialog::validButtonClicked()
     return;
   }
 
-  bool isPublic = false;
   QString pass = "";
   if (checkPublicRoom->isChecked())
   {
-    isPublic = true;
     pass = lineeditPassword->text();
     if (pass.isEmpty())
     {
       return;
     }
   }
-  else
-  {
-    isPublic = false;
-  }
 
   connect(req, SIGNAL(transfertRequest(QString)), this, SLOT(applyRequest(QString)));
-  req->createRoom(this, name, isPublic, pass);
+  req->createRoom(this, name, pass);
 }
 
 void NewRoomDialog::applyRequest(QString request)

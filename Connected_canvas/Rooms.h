@@ -13,13 +13,15 @@ public:
 public slots:
   void newRoomClicked();
   void setCurrentRoom(QString);
+  void setRoomList(QString);
 
 signals:
   void sendNewRoom(QString);
 
 private:
   void build();
-  void loadRooms();
   Requester* req;
   QLabel* currentRoom;
+  QVBoxLayout* layoutArea;
+  std::map<QString, QString> passwordList;
 };
