@@ -71,6 +71,9 @@
     <ClCompile Include="GraphicScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PassWordDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -106,6 +109,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="GraphicScene.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="PassWordDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

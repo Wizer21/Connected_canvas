@@ -12,12 +12,12 @@ size_t write_data(void* ptr, size_t size, size_t nmemb, void* stream)
   return size * nmemb;
 }
 
-ThreadRequest::ThreadRequest(const std::string newUrl, QWidget* parent)
+ThreadRequest::ThreadRequest(const std::string newUrl, QWidget* parent, std::string newPost)
   : QThread(parent)
   , curl(curl_easy_init())
 {
-  QUrl url(QString::fromStdString(newUrl), QUrl::TolerantMode);
-  myUrl = url.toEncoded();
+  myUrl = QUrl(QString::fromStdString(newUrl), QUrl::TolerantMode).toEncoded();
+  myPost = QUrl(QString::fromStdString(newPost), QUrl::TolerantMode).toEncoded();
 }
 
 void ThreadRequest::run()
@@ -28,7 +28,11 @@ void ThreadRequest::run()
 std::string ThreadRequest::download()
 {
   // Basic fetching setup
-  curl_easy_setopt(curl, CURLOPT_URL, this->myUrl.c_str());
+  curl_easy_setopt(curl, CURLOPT_URL, myUrl.c_str());
+  if (myPost != "")
+  {
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, myPost.c_str());
+  }
   curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
   curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
   curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);

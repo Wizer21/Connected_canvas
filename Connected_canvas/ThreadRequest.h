@@ -6,7 +6,7 @@ class ThreadRequest : public QThread
   Q_OBJECT
 
 public:
-  ThreadRequest(const std::string newUrl, QWidget* parent);
+  ThreadRequest(const std::string newUrl, QWidget* parent, std::string post = "");
   ~ThreadRequest();
 
 protected:
@@ -17,6 +17,7 @@ signals:
 
 private:
   std::string myUrl;
+  std::string myPost;
   void* curl;
   std::string download();
 };

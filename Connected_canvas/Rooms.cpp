@@ -4,6 +4,7 @@ Rooms::Rooms(QWidget* parent)
   : QDialog(parent)
 {
   build();
+  this->resize(500, 500);
 }
 
 void Rooms::build()
@@ -25,6 +26,7 @@ void Rooms::build()
   widgetArea->setLayout(layoutArea);
   layout->addWidget(buttonNewRoom);
 
+  layoutArea->setAlignment(Qt::AlignTop);
   area->setWidgetResizable(true);
 
   connect(buttonNewRoom, SIGNAL(clicked()), this, SLOT(newRoomClicked()));
@@ -50,7 +52,6 @@ void Rooms::setCurrentRoom(QString roomName)
 void Rooms::setRoomList(QString request)
 {
   QJsonObject jsonObj((QJsonDocument::fromJson(request.toUtf8()).object()));
-  int size = jsonObj.size();
   QStringList roomNames = jsonObj.keys();
 
   for (const QString& room : roomNames)
@@ -61,8 +62,8 @@ void Rooms::setRoomList(QString request)
     QPushButton* buttonJoin = new QPushButton("join", this);
 
     layoutArea->addLayout(layout);
-    layout->addWidget(labelRoomName);
-    layout->addWidget(labelIsLock);
+    layout->addWidget(labelRoomName, Qt::AlignLeft);
+    layout->addWidget(labelIsLock, Qt::AlignLeft);
     layout->addWidget(buttonJoin, Qt::AlignRight);
 
     QString password = jsonObj.value(room).toString();
@@ -71,7 +72,23 @@ void Rooms::setRoomList(QString request)
     {
       labelIsLock->setText("Lock");
     }
-    buttonJoin->setObjectName(password);
-    passwordList.at(room) = password; // SET PASSWORD MAP
+    buttonJoin->setObjectName(room);
+    passwordList.insert(std::pair<QString, QString>(room, password)); // SET PASSWORD MAP
+    connect(buttonJoin, SIGNAL(clicked()), this, SLOT(joinRoomClicked()));
+  }
+}
+
+void Rooms::joinRoomClicked()
+{
+  QString pass = passwordList.at(sender()->objectName());
+  if (pass != "")
+  {
+    PassWordDialog* passDialog = new PassWordDialog(this, sender()->objectName(), pass);
+    connect(passDialog, SIGNAL(roomPasswordSucces(QString)), this, SLOT(setCurrentRoom(QString)));
+    passDialog->exec();
+  }
+  else
+  {
+    setCurrentRoom(sender()->objectName());
   }
 }

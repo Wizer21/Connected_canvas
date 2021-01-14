@@ -66,8 +66,8 @@ void Requester::createRoom(QWidget* parent, QString name, QString password)
 
 void Requester::updateRoom(QWidget* parent, QString roomName, QString userName, QString base64, int iterator)
 {
-  std::string url = "http://localhost:8080/updateroom?room=" + roomName.toStdString() + "&user=" + userName.toStdString() + "&map=" + base64.toStdString() + "&it=" + QString::number(iterator).toStdString();
-  ThreadRequest* thread = new ThreadRequest(url, parent);
+  std::string url = "http://localhost:8080/updateroom?room=" + roomName.toStdString() + "&user=" + userName.toStdString() + "&it=" + QString::number(iterator).toStdString();
+  ThreadRequest* thread = new ThreadRequest(url, parent, base64.toStdString());
 
   this->connect(thread, SIGNAL(resultRequest(QString)), this, SLOT(sendLog(QString)));
   this->connect(thread, &ThreadRequest::finished, thread, &QObject::deleteLater);

@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "Requester.h"
 #include "NewRoomDialog.h"
+#include "PassWordDialog.h"
 
 class Rooms : public QDialog
 {
@@ -14,6 +15,7 @@ public slots:
   void newRoomClicked();
   void setCurrentRoom(QString);
   void setRoomList(QString);
+  void joinRoomClicked();
 
 signals:
   void sendNewRoom(QString);

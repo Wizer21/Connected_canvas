@@ -103,6 +103,7 @@
     <ClCompile Include="Friends.cpp" />
     <ClCompile Include="GraphicScene.cpp" />
     <ClCompile Include="NewRoomDialog.cpp" />
+    <ClCompile Include="PassWordDialog.cpp" />
     <ClCompile Include="PenBuilder.cpp" />
     <ClCompile Include="Requester.cpp" />
     <ClCompile Include="Rooms.cpp" />
@@ -123,6 +124,7 @@
     <QtMoc Include="Rooms.h" />
     <QtMoc Include="NewRoomDialog.h" />
     <QtMoc Include="GraphicScene.h" />
+    <QtMoc Include="PassWordDialog.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SUtils.h" />
     <QtMoc Include="ThreadRequest.h" />
