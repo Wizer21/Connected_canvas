@@ -84,11 +84,19 @@ GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen) // SCENE
   this->setMinimumRenderSize(1000);
 }
 
+void GraphicScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+  if (event->buttons() == Qt::LeftButton)
+  {
+    drawPoint(event->scenePos());
+  }
+}
+
 void GraphicScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
   if (event->buttons() == Qt::LeftButton)
   {
-    draw(event->scenePos());
+    drawLine(event->scenePos());
   }
 }
 
@@ -97,7 +105,25 @@ void GraphicScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
   isOldPosNull = true;
 }
 
-void GraphicScene::draw(const QPointF currentPos)
+void GraphicScene::drawPoint(const QPointF currentPos)
+{
+  QPainter painter(image);
+  painter.setPen(*userPen);
+
+  if (isOldPosNull)
+  {
+    oldPos = currentPos;
+  }
+  painter.drawPoint(currentPos.x(), currentPos.y());
+  oldPos = currentPos;
+  isOldPosNull = false;
+
+  update();
+  this->clear();
+  this->addPixmap(QPixmap::fromImage(*image));
+}
+
+void GraphicScene::drawLine(const QPointF currentPos)
 {
   QPainter painter(image);
   painter.setPen(*userPen);
@@ -122,7 +148,7 @@ void GraphicScene::joinedRoom(QString roomName, QString userName)
 
 void GraphicScene::wheelEvent(QGraphicsSceneWheelEvent* event)
 {
-  if (QGuiApplication::queryKeyboardModifiers() == Qt::AltModifier)
+  if (QGuiApplication::queryKeyboardModifiers() == Qt::ShiftModifier)
   {
     int numDegrees = event->delta() / 8;
     double wheel_height = numDegrees;

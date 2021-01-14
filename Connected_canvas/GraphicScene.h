@@ -35,6 +35,7 @@ signals:
   void penSizeChanged(int);
 
 protected:
+  void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
   void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
   void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
   void wheelEvent(QGraphicsSceneWheelEvent* event) override;
@@ -46,5 +47,6 @@ private:
   QImage* image;
   bool isOldPosNull;
 
-  void draw(const QPointF currentPos);
+  void drawPoint(const QPointF currentPos);
+  void drawLine(const QPointF currentPos);
 };

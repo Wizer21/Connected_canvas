@@ -8,6 +8,7 @@ PenBuilder::PenBuilder(QWidget* parent, QPen* pen)
   pen->setColor(mainColor);
   pen->setWidth(25);
   pen->setJoinStyle(Qt::RoundJoin);
+  pen->setCapStyle(Qt::RoundCap);
 
   QGridLayout* mainLayout = new QGridLayout(this);
   QPushButton* buttonBrushType = new QPushButton("contain brush", this);
