@@ -36,6 +36,7 @@ private:
   GraphicScene* sceneMain;
   Requester* req;
   QLabel* labelPseudo;
+  QLabel* labelRoomName;
   QPen* myPen;
   PenBuilder* penBuilder;
   QString userName;

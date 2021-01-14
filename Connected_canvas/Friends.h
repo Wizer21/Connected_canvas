@@ -2,6 +2,7 @@
 #include <qdialog.h>
 #include "SUtils.h"
 #include "Requester.h"
+#include "SUtils.h"
 
 class Friends : public QDialog
 {

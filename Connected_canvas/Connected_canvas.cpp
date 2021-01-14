@@ -25,8 +25,7 @@ void Connected_canvas::build()
   QWidget* widgetRoom = new QWidget(this);
   QGridLayout* layoutRoom = new QGridLayout(this);
   labelPseudo = new QLabel("Offline", this);
-  QLabel* labelId = new QLabel("myid", this);
-  QLabel* labelRoomId = new QLabel("roomid", this);
+  labelRoomName = new QLabel("roomid", this);
   QScrollArea* areaUserRoom = new QScrollArea(this);
   QWidget* widgetArea = new QWidget(this);
   QVBoxLayout* layoutArea = new QVBoxLayout(this);
@@ -49,9 +48,8 @@ void Connected_canvas::build()
   layoutMain->addWidget(widgetRoom, 0, 0);
   widgetRoom->setLayout(layoutRoom);
   layoutRoom->addWidget(labelPseudo, 0, 0);
-  layoutRoom->addWidget(labelId, 1, 0);
-  layoutRoom->addWidget(labelRoomId, 0, 1);
-  layoutRoom->addWidget(areaUserRoom, 2, 0, 1, 2);
+  layoutRoom->addWidget(labelRoomName, 0, 1);
+  layoutRoom->addWidget(areaUserRoom, 1, 0, 1, 2);
   areaUserRoom->setWidget(widgetArea);
   widgetArea->setLayout(layoutArea);
 
@@ -134,6 +132,7 @@ void Connected_canvas::closeEvent(QCloseEvent* event)
 
 void Connected_canvas::joinedRoom(QString newRoomName)
 {
+  labelRoomName->setText(newRoomName);
   sceneMain->joinedRoom(newRoomName, userName);
 }
 

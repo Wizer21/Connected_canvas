@@ -10,8 +10,12 @@ public:
       instance = new SUtils;
     return instance;
   }
+  void pushResolution(std::pair<int, int> res, int newFontSize);
+  void setFontOnWidget(QWidget* widget, double ratio);
 
 private:
   static SUtils* instance;
+  std::pair<int, int> resolution;
+  int fontSize;
   SUtils();
 };

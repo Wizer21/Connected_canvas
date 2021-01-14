@@ -33,14 +33,19 @@ void Friends::loadFriends()
   {
     QLabel* lab = new QLabel(tr("Friends List"), this);
     layoutArea->addWidget(lab);
+
     connect(req, SIGNAL(transfertRequest(QString)), this, SLOT(setFriendsList(QString)));
     req->frienList(this, userName);
+
+    SUtils::getInstance()->setFontOnWidget(lab, 1.5);
   }
   else
   {
     QLabel* lab = new QLabel(tr("OFFLINE"), this);
     layoutArea->addWidget(lab);
     loadOnlineUsers();
+
+    SUtils::getInstance()->setFontOnWidget(lab, 1.5);
   }
 }
 
@@ -60,6 +65,7 @@ void Friends::loadOnlineUsers()
 {
   QLabel* lab = new QLabel(tr("Online Users"), this);
   layoutArea->addWidget(lab);
+  SUtils::getInstance()->setFontOnWidget(lab, 1.5);
 
   connect(req, SIGNAL(transfertRequest(QString)), this, SLOT(setOnlineList(QString)));
   req->onlineUsers(this);
