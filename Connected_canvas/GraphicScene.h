@@ -26,13 +26,18 @@ private:
 
 class GraphicScene : public QGraphicsScene
 {
+  Q_OBJECT
 public:
   GraphicScene(QWidget* parent, QPen* userPen);
   void joinedRoom(QString roomName, QString userName);
 
+signals:
+  void penSizeChanged(int);
+
 protected:
   void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
   void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+  void wheelEvent(QGraphicsSceneWheelEvent* event) override;
 
 private:
   QWidget* parent;

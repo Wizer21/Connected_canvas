@@ -32,7 +32,7 @@ void Connected_canvas::build()
   QVBoxLayout* layoutArea = new QVBoxLayout(this);
 
   myPen = new QPen();
-  PenBuilder* penBuilder = new PenBuilder(this, myPen);
+  penBuilder = new PenBuilder(this, myPen);
 
   //QWidget* widgetLayers = new QWidget(this);
   QGraphicsView* viewMain = new QGraphicsView(this);
@@ -72,6 +72,7 @@ void Connected_canvas::build()
   connect(actionLogIn, SIGNAL(triggered()), this, SLOT(logInTriggered()));
   connect(actionFriends, SIGNAL(triggered()), this, SLOT(friendsTriggered()));
   connect(actionRooms, SIGNAL(triggered()), this, SLOT(roomsTriggered()));
+  connect(sceneMain, SIGNAL(penSizeChanged(int)), this, SLOT(newPenSize(int)));
 }
 
 void Connected_canvas::logIn()
@@ -134,4 +135,9 @@ void Connected_canvas::closeEvent(QCloseEvent* event)
 void Connected_canvas::joinedRoom(QString newRoomName)
 {
   sceneMain->joinedRoom(newRoomName, userName);
+}
+
+void Connected_canvas::newPenSize(int val)
+{
+  penBuilder->setPenSizeFromWheel(val);
 }

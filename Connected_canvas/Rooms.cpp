@@ -73,4 +73,5 @@ void Rooms::setRoomList(QString request)
     }
     buttonJoin->setObjectName(password);
     passwordList.at(room) = password; // SET PASSWORD MAP
+  }
 }

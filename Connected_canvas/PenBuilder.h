@@ -9,15 +9,18 @@ class PenBuilder : public QWidget
 public:
   PenBuilder(QWidget* parent, QPen* pen);
   void setSelecter();
+  void setPenSizeFromWheel(int);
 
 public slots:
   void applyHoverColor(QColor);
   void applySelectedColor(QColor);
   void applyPickedLeaved();
+  void penSizeChanged(QString);
 
 private:
   QPen* mainPen;
   QColor mainColor;
   QLabel* labelHoverColor;
   QLabel* labelSelectedColor;
+  QLineEdit* setPenSize;
 };

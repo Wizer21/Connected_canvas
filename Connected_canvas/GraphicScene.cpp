@@ -80,6 +80,7 @@ GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen) // SCENE
   isOldPosNull = true;
 
   image = new QImage(1000, 1000, QImage::Format_RGB32);
+  this->addPixmap(QPixmap::fromImage(*image));
   this->setMinimumRenderSize(1000);
 }
 
@@ -117,4 +118,27 @@ void GraphicScene::draw(const QPointF currentPos)
 void GraphicScene::joinedRoom(QString roomName, QString userName)
 {
   Thread th(parent, roomName, userName, image);
+}
+
+void GraphicScene::wheelEvent(QGraphicsSceneWheelEvent* event)
+{
+  if (QGuiApplication::queryKeyboardModifiers() == Qt::AltModifier)
+  {
+    int numDegrees = event->delta() / 8;
+    double wheel_height = numDegrees;
+
+    if (wheel_height > 0)
+    {
+      emit penSizeChanged(1);
+    }
+
+    else if (wheel_height < 0)
+    {
+      emit penSizeChanged(-1);
+    }
+  }
+  else
+  {
+    QGraphicsScene::wheelEvent(event);
+  }
 }

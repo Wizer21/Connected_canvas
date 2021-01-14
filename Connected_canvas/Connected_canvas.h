@@ -23,6 +23,7 @@ public slots:
   void roomsTriggered();
   void displayNewUser(QString);
   void joinedRoom(QString);
+  void newPenSize(int);
 
 protected:
   void closeEvent(QCloseEvent* event) override;
@@ -36,6 +37,6 @@ private:
   Requester* req;
   QLabel* labelPseudo;
   QPen* myPen;
-
+  PenBuilder* penBuilder;
   QString userName;
 };
