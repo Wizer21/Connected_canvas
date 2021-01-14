@@ -5,6 +5,8 @@ PenBuilder::PenBuilder(QWidget* parent, QPen* pen)
 {
   mainPen = pen;
   mainColor = (Qt::black);
+  mainColor.setAlpha(255);
+  alpha = 255;
   pen->setColor(mainColor);
   pen->setWidth(25);
   pen->setJoinStyle(Qt::RoundJoin);
@@ -17,6 +19,8 @@ PenBuilder::PenBuilder(QWidget* parent, QPen* pen)
   ColorPicker* picker = new ColorPicker(this);
   QLabel* labelPenSize = new QLabel("Pen Size ", this);
   setPenSize = new QLineEdit(QString::number(mainPen->width()), this);
+  QLabel* labelPenOpacity = new QLabel("Pen Opacity ", this);
+  setPenOpacity = new QLineEdit("wip", this);
 
   this->setLayout(mainLayout);
   mainLayout->addWidget(buttonBrushType, 0, 0);
@@ -25,6 +29,8 @@ PenBuilder::PenBuilder(QWidget* parent, QPen* pen)
   mainLayout->addWidget(picker, 1, 0, 2, 3);
   mainLayout->addWidget(labelPenSize, 3, 0, 1, 2);
   mainLayout->addWidget(setPenSize, 3, 2);
+  mainLayout->addWidget(labelPenOpacity, 4, 0, 1, 2);
+  mainLayout->addWidget(setPenOpacity, 4, 2);
 
   mainLayout->setColumnStretch(0, 1);
   mainLayout->setColumnStretch(1, 1);
@@ -33,10 +39,12 @@ PenBuilder::PenBuilder(QWidget* parent, QPen* pen)
   labelHoverColor->setContentsMargins(0, 0, 0, 0);
   labelSelectedColor->setContentsMargins(0, 0, 0, 0);
   setPenSize->setValidator(&QIntValidator());
+  setPenOpacity->setValidator(&QIntValidator(0, 100));
 
   setSelecter();
 
   connect(setPenSize, SIGNAL(textEdited(QString)), this, SLOT(penSizeChanged(QString)));
+  connect(setPenOpacity, SIGNAL(textEdited(QString)), this, SLOT(penOpacityChanged(QString)));
   connect(picker, SIGNAL(displayHoverColor(QColor)), this, SLOT(applyHoverColor(QColor)));
   connect(picker, SIGNAL(displaySelectedColor(QColor)), this, SLOT(applySelectedColor(QColor)));
   connect(picker, SIGNAL(pickerLeaved()), this, SLOT(applyPickedLeaved()));
@@ -62,7 +70,8 @@ void PenBuilder::applyHoverColor(QColor color)
 void PenBuilder::applySelectedColor(QColor color)
 {
   mainColor = color;
-  mainPen->setColor(color);
+  mainColor.setAlpha(round((alpha / 100.0) * 255.0));
+  mainPen->setColor(mainColor);
 
   QPixmap pix(labelSelectedColor->size());
   pix.fill(color);
@@ -96,4 +105,11 @@ void PenBuilder::setPenSizeFromWheel(int val)
     mainPen->setWidth(penSize);
   }
   setPenSize->setText(QString::number(penSize));
+}
+
+void PenBuilder::penOpacityChanged(QString str)
+{
+  alpha = str.toInt();
+  mainColor.setAlpha(round((setPenOpacity->text().toDouble() / 100.0) * 255.0));
+  mainPen->setColor(mainColor);
 }

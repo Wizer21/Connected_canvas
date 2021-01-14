@@ -16,6 +16,7 @@ public slots:
   void applySelectedColor(QColor);
   void applyPickedLeaved();
   void penSizeChanged(QString);
+  void penOpacityChanged(QString);
 
 private:
   QPen* mainPen;
@@ -23,4 +24,6 @@ private:
   QLabel* labelHoverColor;
   QLabel* labelSelectedColor;
   QLineEdit* setPenSize;
+  QLineEdit* setPenOpacity;
+  int alpha;
 };
