@@ -1,15 +1,23 @@
 #include "GraphicScene.h"
 
-Thread::Thread(QWidget* parent, QString newRoomName, QString userName, QImage* image) // THREAD
-  : QThread(parent)
+Thread::Thread(QWidget* newParent, QString newRoomName, QString newUserName, QImage* image, int& newIterator, std::map<QString, QImage>& newUserListImage) // THREAD
+  : QThread(newParent)
 {
-  iterator = 0;
+  iterator = &newIterator;
   roomName = newRoomName;
   userImage = image;
+  parent = newParent;
+  userName = newUserName;
+  userListImage = &newUserListImage;
 
   req = new Requester();
   connect(req, SIGNAL(transfertRequest(QString)), this, SLOT(roomRequest(QString)));
-  req->updateRoom(parent, newRoomName, userName, imageToB64(*userImage), iterator);
+
+  time = new QTimer();
+  connect(time, SIGNAL(timeout()), this, SLOT(newIteration()));
+  time->start(500);
+
+  this->start();
 }
 
 QString Thread::imageToB64(QImage image)
@@ -23,8 +31,14 @@ QString Thread::imageToB64(QImage image)
 
 QImage Thread::b64ToImage(char* base64Array)
 {
-  QByteArray byteArray = QByteArray::fromBase64(base64Array);
-  return QImage::fromData(byteArray);
+  return QImage::fromData(QByteArray::fromBase64(base64Array));
+}
+
+void Thread::newIteration()
+{
+  req->updateRoom(parent, roomName, userName, imageToB64(*userImage), *iterator);
+
+  time->start(500);
 }
 
 void Thread::roomRequest(QString request)
@@ -41,7 +55,7 @@ void Thread::roomRequest(QString request)
       auto currentUser = jsonObj.value(userListIterator.at(i).first).toObject();  // GET HIS OBJECT
       if (userListIterator.at(i).second != currentUser.value("iterator").toInt()) // IF ITERATOR CHANGED
       {
-        userListImage.at(userListIterator.at(i).first) = b64ToImage(currentUser.value("map").toString().toUtf8().toBase64().data()); // IF ITERATOR CHANGES, SET NEW QIMAGE
+        userListImage->at(userListIterator.at(i).first) = b64ToImage(currentUser.value("map").toString().toUtf8().data()); // IF ITERATOR CHANGES, SET NEW QIMAGE
       }
     }
     else
@@ -52,10 +66,11 @@ void Thread::roomRequest(QString request)
 
   for (const QString user : newUsers) // CHECK FROM NEW USERS
   {
-    if (!newUsers.contains(user)) // IF ONE ISN'T IN OLD LIST
+    if (userListImage->count(user) == 0) // IF ONE ISN'T IN OLD LIST
     {
-      userListIterator.push_back(std::pair<QString, int>(user, 0)); // PUSH IT
-      userListImage.insert(std::pair<QString, QImage>(user, b64ToImage(jsonObj.value(user).toObject().value("map").toString().toUtf8().toBase64().data())));
+      userListIterator.push_back(std::pair<QString, int>(user, 0)); // CREATE NEW USER
+      QImage img = b64ToImage(jsonObj.value(user).toObject().value("map").toString().toUtf8().data());
+      userListImage->insert(std::pair<QString, QImage>(user, img));
     }
   }
   for (const QString& userToDelete : trash) // DELETES USERS FROM TRASH
@@ -68,8 +83,10 @@ void Thread::roomRequest(QString request)
         userListIterator.erase(userListIterator.begin() + i);
       }
     }
-    userListImage.erase(userToDelete);
+    userListImage->erase(userToDelete);
   }
+
+  emit drawFromServer();
 }
 
 GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen) // SCENE
@@ -78,8 +95,13 @@ GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen) // SCENE
   parent = new_parent;
   userPen = new_userPen;
   isOldPosNull = true;
+  th = nullptr;
+  connect(th, SIGNAL(drawFromServer()), this, SLOT(fillScene()));
+  iterator = 0;
+  userName = "";
 
   image = new QImage(1000, 1000, QImage::Format_RGB32);
+  image->fill(Qt::transparent);
   this->addPixmap(QPixmap::fromImage(*image));
   this->setMinimumRenderSize(1000);
 }
@@ -118,9 +140,9 @@ void GraphicScene::drawPoint(const QPointF currentPos)
   oldPos = currentPos;
   isOldPosNull = false;
 
+  iterator++;
   update();
-  this->clear();
-  this->addPixmap(QPixmap::fromImage(*image));
+  fillScene();
 }
 
 void GraphicScene::drawLine(const QPointF currentPos)
@@ -136,14 +158,40 @@ void GraphicScene::drawLine(const QPointF currentPos)
   oldPos = currentPos;
   isOldPosNull = false;
 
+  iterator++;
   update();
-  this->clear();
-  this->addPixmap(QPixmap::fromImage(*image));
+  fillScene();
 }
 
-void GraphicScene::joinedRoom(QString roomName, QString userName)
+void GraphicScene::joinedRoom(QString roomName, QString newUserName)
 {
-  Thread th(parent, roomName, userName, image);
+  iterator = 0;
+  userListImage.clear();
+  userName = newUserName;
+
+  if (th)
+  {
+    delete th;
+    th = new Thread(parent, roomName, newUserName, image, iterator, userListImage);
+  }
+  else
+  {
+    th = new Thread(parent, roomName, newUserName, image, iterator, userListImage);
+  }
+}
+
+void GraphicScene::fillScene()
+{
+  this->clear();
+
+  for (const auto& it : userListImage)
+  {
+    if (it.first != userName)
+    {
+      this->addPixmap(QPixmap::fromImage(it.second));
+    }
+  }
+  this->addPixmap(QPixmap::fromImage(*image));
 }
 
 void GraphicScene::wheelEvent(QGraphicsSceneWheelEvent* event)
