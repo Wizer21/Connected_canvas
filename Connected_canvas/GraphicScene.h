@@ -1,13 +1,14 @@
 #pragma once
 #include "stdafx.h"
 #include "Requester.h"
+#include "LayerList.h"
 
 class Thread : public QThread
 {
   Q_OBJECT
 
 public:
-  Thread(QWidget* parent, QString roomName, QString userName, QImage* image, int& iterator, std::map<QString, QImage>& userListImage);
+  Thread(QWidget* parent, QString roomName, QString userName, QImage* image, int& iterator, std::map<QString, QImage>& userListImage, LayerList* layerList);
   void stopClock();
 
 public slots:
@@ -21,6 +22,7 @@ private:
   QString imageToB64(QImage image);
   QImage b64ToImage(char* base64Array);
 
+  LayerList* layerList;
   QWidget* parent;
   QString userName;
   QString roomName;
@@ -37,7 +39,7 @@ class GraphicScene : public QGraphicsScene
 {
   Q_OBJECT
 public:
-  GraphicScene(QWidget* parent, QPen* userPen, bool* isPainting);
+  GraphicScene(QWidget* parent, QPen* userPen, bool* isPainting, LayerList* layerList);
   void joinedRoom(QString roomName, QString userName);
   void closeThread();
 
@@ -56,6 +58,7 @@ protected:
 private:
   int iterator;
   Requester* req;
+  LayerList* layerList;
   QString roomName;
   QString userName;
   QWidget* parent;

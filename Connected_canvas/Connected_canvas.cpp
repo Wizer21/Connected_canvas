@@ -27,16 +27,13 @@ void Connected_canvas::build()
   QGridLayout* layoutRoom = new QGridLayout(this);
   labelPseudo = new QLabel("Offline", this);
   labelRoomName = new QLabel("roomid", this);
-  QScrollArea* areaUserRoom = new QScrollArea(this);
-  QWidget* widgetArea = new QWidget(this);
-  QVBoxLayout* layoutArea = new QVBoxLayout(this);
+  LayerList* layers = new LayerList(this);
 
   myPen = new QPen();
   penBuilder = new PenBuilder(this, myPen, &paint);
 
-  //QWidget* widgetLayers = new QWidget(this);
   QGraphicsView* viewMain = new QGraphicsView(this);
-  sceneMain = new GraphicScene(this, myPen, &paint);
+  sceneMain = new GraphicScene(this, myPen, &paint, layers);
 
   this->setCentralWidget(widgetCentral);
   widgetCentral->setLayout(layoutMain);
@@ -50,9 +47,7 @@ void Connected_canvas::build()
   widgetRoom->setLayout(layoutRoom);
   layoutRoom->addWidget(labelPseudo, 0, 0);
   layoutRoom->addWidget(labelRoomName, 0, 1);
-  layoutRoom->addWidget(areaUserRoom, 1, 0, 1, 2);
-  areaUserRoom->setWidget(widgetArea);
-  widgetArea->setLayout(layoutArea);
+  layoutRoom->addWidget(layers, 1, 0, 1, 2);
 
   layoutMain->addWidget(penBuilder, 1, 0);
 

@@ -1,6 +1,6 @@
 #include "GraphicScene.h"
 
-Thread::Thread(QWidget* newParent, QString newRoomName, QString newUserName, QImage* image, int& newIterator, std::map<QString, QImage>& newUserListImage) // THREAD
+Thread::Thread(QWidget* newParent, QString newRoomName, QString newUserName, QImage* image, int& newIterator, std::map<QString, QImage>& newUserListImage, LayerList* newLayerList) // THREAD
   : QThread(newParent)
 {
   iterator = &newIterator;
@@ -9,6 +9,7 @@ Thread::Thread(QWidget* newParent, QString newRoomName, QString newUserName, QIm
   parent = newParent;
   userName = newUserName;
   userListImage = &newUserListImage;
+  layerList = newLayerList;
 
   connect(this, &Thread::finished, this, &QObject::deleteLater);
   req = new Requester();
@@ -55,6 +56,8 @@ void Thread::roomRequest(QString request)
   QStringList newUsers = jsonObj.keys();
   QStringList trash;
 
+  bool userListChanged = false;
+
   int sizeList = int(userListIterator.size());
   for (int i = 0; i < sizeList; i++) // FOR EVERY STOCKED PLAYERS
   {
@@ -78,6 +81,8 @@ void Thread::roomRequest(QString request)
   {
     if (userListImage->count(user) == 0) // IF ONE ISN'T IN OLD LIST
     {
+      userListChanged = true;
+      layerList->newUser(user);
       userListIterator.push_back(std::pair<QString, int>(user, 0)); // CREATE NEW USER
       QImage img = b64ToImage(jsonObj.value(user).toObject().value("map").toString().toUtf8().data());
       userListImage->insert(std::pair<QString, QImage>(user, img));
@@ -90,21 +95,29 @@ void Thread::roomRequest(QString request)
     {
       if (userListIterator.at(i).first == userToDelete)
       {
+        userListChanged = true;
+        layerList->leavedUser(userListIterator.at(i).first);
         userListIterator.erase(userListIterator.begin() + i);
       }
     }
     userListImage->erase(userToDelete);
   }
 
+  if (userListChanged)
+  {
+    layerList->reBuild();
+  }
+
   emit drawFromServer();
 }
 
-GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen, bool* isPainting) // SCENE
+GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen, bool* isPainting, LayerList* newLayerList) // SCENE
   : QGraphicsScene(new_parent)
 {
   parent = new_parent;
   userPen = new_userPen;
   paint = isPainting;
+  layerList = newLayerList;
   isOldPosNull = true;
   th = nullptr;
   iterator = 0;
@@ -198,7 +211,7 @@ void GraphicScene::joinedRoom(QString newRoomName, QString newUserName)
   roomName = newRoomName;
   userName = newUserName;
 
-  th = new Thread(parent, roomName, newUserName, image, iterator, userListImage);
+  th = new Thread(parent, roomName, newUserName, image, iterator, userListImage, layerList);
 
   connect(th, SIGNAL(drawFromServer()), this, SLOT(fillScene()));
 }

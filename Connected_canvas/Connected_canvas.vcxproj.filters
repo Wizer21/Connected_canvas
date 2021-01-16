@@ -74,6 +74,9 @@
     <ClCompile Include="PassWordDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LayerList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -112,6 +115,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="PassWordDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="LayerList.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

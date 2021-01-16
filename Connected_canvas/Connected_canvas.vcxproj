@@ -102,6 +102,7 @@
     <ClCompile Include="ColorPicker.cpp" />
     <ClCompile Include="Friends.cpp" />
     <ClCompile Include="GraphicScene.cpp" />
+    <ClCompile Include="LayerList.cpp" />
     <ClCompile Include="NewRoomDialog.cpp" />
     <ClCompile Include="PassWordDialog.cpp" />
     <ClCompile Include="PenBuilder.cpp" />
@@ -125,6 +126,7 @@
     <QtMoc Include="NewRoomDialog.h" />
     <QtMoc Include="GraphicScene.h" />
     <QtMoc Include="PassWordDialog.h" />
+    <QtMoc Include="LayerList.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SUtils.h" />
     <QtMoc Include="ThreadRequest.h" />

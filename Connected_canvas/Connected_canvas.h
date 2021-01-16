@@ -8,6 +8,7 @@
 #include "Friends.h"
 #include "Rooms.h"
 #include "GraphicScene.h"
+#include "LayerList.h"
 
 class Connected_canvas : public QMainWindow
 {
