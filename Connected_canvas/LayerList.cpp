@@ -13,10 +13,17 @@ LayerList::LayerList(QWidget* parent)
   this->setWidgetResizable(true);
 }
 
+QStringList* LayerList::getList()
+{
+  return &displayedUsers;
+}
+
 void LayerList::clearList()
 {
   displayedUsers.clear();
   userPosition.clear();
+  qDeleteAll(widgetList.begin(), widgetList.end());
+  widgetList.clear();
 }
 
 void LayerList::newUser(QString userName)
@@ -59,8 +66,13 @@ void LayerList::userUp()
   {
     if (userPosition.at(i).first == userName)
     {
-      userPosition.move(i, i + 1);
-      return;
+      if (i + 1 != sizeList)
+      {
+        userPosition.move(i, i + 1);
+        reBuild();
+        updateDisplayedList();
+        return;
+      }
     }
   }
 }
@@ -73,28 +85,37 @@ void LayerList::userDown()
   {
     if (userPosition.at(i).first == userName)
     {
-      userPosition.move(i, i - 1);
-      return;
+      if (i != 0)
+      {
+        userPosition.move(i, i - 1);
+        reBuild();
+        updateDisplayedList();
+        return;
+      }
     }
   }
 }
 
 void LayerList::toggleVisible()
 {
-  QString userName = sender()->objectName();
+  QPushButton* button = qobject_cast<QPushButton*>(sender());
+  QString userName = button->objectName();
 
-  for (std::pair<QString, bool> pair : userPosition)
+  for (std::pair<QString, bool>& pair : userPosition)
   {
     if (pair.first == userName)
     {
       if (pair.second)
       {
         pair.second = false;
+        button->setText("Hide");
       }
       else
       {
         pair.second = true;
+        button->setText("Show");
       }
+      updateDisplayedList();
       return;
     }
   }
@@ -114,7 +135,7 @@ void LayerList::reBuild()
     QPushButton* buttonUp = new QPushButton("up", this);
     QPushButton* buttonDown = new QPushButton("down", this);
 
-    mainLayout->addWidget(widgetUser);
+    mainLayout->insertWidget(0, widgetUser);
     widgetUser->setLayout(layoutUser);
     layoutUser->addWidget(labelUserName, 0, 0, 2, 1);
     layoutUser->addWidget(buttonShow, 0, 1, 2, 1);

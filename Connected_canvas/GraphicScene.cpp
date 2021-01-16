@@ -47,7 +47,7 @@ void Thread::newIteration()
 {
   req->updateRoom(parent, roomName, userName, imageToB64(*userImage), *iterator);
 
-  time->start(500);
+  time->start(100);
 }
 
 void Thread::roomRequest(QString request)
@@ -118,8 +118,10 @@ GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen, bool* isPaint
   userPen = new_userPen;
   paint = isPainting;
   layerList = newLayerList;
+  sortedLayers = newLayerList->getList();
   isOldPosNull = true;
   th = nullptr;
+  online = false;
   iterator = 0;
   roomName = "";
   userName = "";
@@ -202,12 +204,12 @@ void GraphicScene::joinedRoom(QString newRoomName, QString newUserName)
   {
     th->stopClock();
     th->quit();
-    //th->wait();
     req->leaveRoom(parent, roomName, userName);
+    userListImage.clear();
+    layerList->clearList();
   }
-
+  online = true;
   iterator = 0;
-  userListImage.clear();
   roomName = newRoomName;
   userName = newUserName;
 
@@ -220,14 +222,24 @@ void GraphicScene::fillScene()
 {
   this->clear();
 
-  for (const auto& it : userListImage)
+  int sizeList = int(sortedLayers->size());
+  if (!online)
   {
-    if (it.first != userName)
+    this->addPixmap(QPixmap::fromImage(*image));
+    return;
+  }
+
+  for (int i = 0; i < sizeList; i++)
+  {
+    if (sortedLayers->at(i) == userName)
     {
-      this->addPixmap(QPixmap::fromImage(it.second));
+      this->addPixmap(QPixmap::fromImage(*image));
+    }
+    else
+    {
+      this->addPixmap(QPixmap::fromImage(userListImage.at(sortedLayers->at(i))));
     }
   }
-  this->addPixmap(QPixmap::fromImage(*image));
 }
 
 void GraphicScene::wheelEvent(QGraphicsSceneWheelEvent* event)

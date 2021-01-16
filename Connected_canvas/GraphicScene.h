@@ -59,11 +59,13 @@ private:
   int iterator;
   Requester* req;
   LayerList* layerList;
+  QStringList* sortedLayers;
   QString roomName;
   QString userName;
   QWidget* parent;
   QPen* userPen;
   bool* paint;
+  bool online;
   QPointF oldPos;
   QImage* image;
   Thread* th;

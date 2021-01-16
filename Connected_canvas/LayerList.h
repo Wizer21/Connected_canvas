@@ -11,6 +11,7 @@ public:
   void newUser(QString userName);
   void leavedUser(QString userName);
   void reBuild();
+  QStringList* getList();
 
 public slots:
   void userUp();
