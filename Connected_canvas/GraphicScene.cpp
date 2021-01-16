@@ -37,11 +37,16 @@ QImage Thread::b64ToImage(char* base64Array)
   return img;
 }
 
+void Thread::stopClock()
+{
+  disconnect(time, SIGNAL(timeout()), nullptr, nullptr);
+}
+
 void Thread::newIteration()
 {
   req->updateRoom(parent, roomName, userName, imageToB64(*userImage), *iterator);
 
-  time->start(250);
+  time->start(500);
 }
 
 void Thread::roomRequest(QString request)
@@ -103,7 +108,9 @@ GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen, bool* isPaint
   isOldPosNull = true;
   th = nullptr;
   iterator = 0;
+  roomName = "";
   userName = "";
+  req = new Requester();
 
   image = new QImage(1000, 1000, QImage::Format_ARGB32);
   image->fill(Qt::transparent);
@@ -176,22 +183,23 @@ void GraphicScene::drawLine(const QPointF currentPos)
   fillScene();
 }
 
-void GraphicScene::joinedRoom(QString roomName, QString newUserName)
+void GraphicScene::joinedRoom(QString newRoomName, QString newUserName)
 {
-  iterator = 0;
-  userListImage.clear();
-  userName = newUserName;
-
   if (th)
   {
+    th->stopClock();
     th->quit();
-    delete th;
-    th = new Thread(parent, roomName, newUserName, image, iterator, userListImage);
+    //th->wait();
+    req->leaveRoom(parent, roomName, userName);
   }
-  else
-  {
-    th = new Thread(parent, roomName, newUserName, image, iterator, userListImage);
-  }
+
+  iterator = 0;
+  userListImage.clear();
+  roomName = newRoomName;
+  userName = newUserName;
+
+  th = new Thread(parent, roomName, newUserName, image, iterator, userListImage);
+
   connect(th, SIGNAL(drawFromServer()), this, SLOT(fillScene()));
 }
 
@@ -237,6 +245,6 @@ void GraphicScene::closeThread()
   if (th)
   {
     th->quit();
-    //delete th;
+    req->leaveRoom(parent, roomName, userName);
   }
 }

@@ -16,6 +16,7 @@ public:
   void createRoom(QWidget* parent, QString name, QString password);
   void updateRoom(QWidget* parent, QString roomName, QString userName, QString base64, int iterator);
   void roomListPassword(QWidget* parent);
+  void leaveRoom(QWidget* parent, QString room, QString user);
 
 public slots:
   void sendLog(QString);

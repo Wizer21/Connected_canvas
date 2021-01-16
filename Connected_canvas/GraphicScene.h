@@ -8,6 +8,7 @@ class Thread : public QThread
 
 public:
   Thread(QWidget* parent, QString roomName, QString userName, QImage* image, int& iterator, std::map<QString, QImage>& userListImage);
+  void stopClock();
 
 public slots:
   void roomRequest(QString);
@@ -54,6 +55,8 @@ protected:
 
 private:
   int iterator;
+  Requester* req;
+  QString roomName;
   QString userName;
   QWidget* parent;
   QPen* userPen;

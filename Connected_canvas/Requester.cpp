@@ -84,6 +84,17 @@ void Requester::roomListPassword(QWidget* parent)
   thread->start();
 }
 
+void Requester::leaveRoom(QWidget* parent, QString room, QString user)
+{
+  std::string url = "http://localhost:8080/leaveroom?room=" + room.toStdString() + "&user=" + user.toStdString();
+  ThreadRequest* thread = new ThreadRequest(url, parent);
+
+  this->connect(thread, SIGNAL(resultRequest(QString)), this, SLOT(sendLog(QString)));
+  this->connect(thread, &ThreadRequest::finished, thread, &QObject::deleteLater);
+  thread->start();
+  thread->wait();
+}
+
 void Requester::sendLog(QString name)
 {
   emit transfertRequest(name);
