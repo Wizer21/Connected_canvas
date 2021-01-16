@@ -38,6 +38,7 @@ class GraphicScene : public QGraphicsScene
 public:
   GraphicScene(QWidget* parent, QPen* userPen);
   void joinedRoom(QString roomName, QString userName);
+  void closeThread();
 
 public slots:
   void fillScene();

@@ -125,6 +125,7 @@ void Connected_canvas::closeEvent(QCloseEvent* event)
 {
   //QMessageBox box(QMessageBox::NoIcon, " ", tr("Disconnecting...\nThis can take few seconds."), QMessageBox::NoButton, this, Qt::Dialog);
   //box.show();
+  sceneMain->closeThread(); // WHEN PROGROM READY, THIS WILL LOGOUT FROM THE CURRENT ROOM
   this->hide();
   qApp->processEvents();
   req->logOut(this, labelPseudo->text());

@@ -31,7 +31,9 @@ QString Thread::imageToB64(QImage image)
 
 QImage Thread::b64ToImage(char* base64Array)
 {
-  return QImage::fromData(QByteArray::fromBase64(base64Array));
+  QImage img = QImage::fromData(QByteArray::fromBase64(base64Array));
+  //img.fill(Qt::transparent);
+  return img;
 }
 
 void Thread::newIteration()
@@ -52,10 +54,12 @@ void Thread::roomRequest(QString request)
   {
     if (newUsers.contains(userListIterator.at(i).first)) // CHECK IF STILL IN ROOM
     {
-      auto currentUser = jsonObj.value(userListIterator.at(i).first).toObject();  // GET HIS OBJECT
-      if (userListIterator.at(i).second != currentUser.value("iterator").toInt()) // IF ITERATOR CHANGED
+      auto currentUser = jsonObj.value(userListIterator.at(i).first).toObject(); // GET HIS OBJECT
+      int currentIterator = currentUser.value("iterator").toString().toInt();
+      if (userListIterator.at(i).second != currentIterator) // IF ITERATOR CHANGED
       {
         userListImage->at(userListIterator.at(i).first) = b64ToImage(currentUser.value("map").toString().toUtf8().data()); // IF ITERATOR CHANGES, SET NEW QIMAGE
+        userListIterator.at(i).second = currentIterator;
       }
     }
     else
@@ -96,11 +100,10 @@ GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen) // SCENE
   userPen = new_userPen;
   isOldPosNull = true;
   th = nullptr;
-  connect(th, SIGNAL(drawFromServer()), this, SLOT(fillScene()));
   iterator = 0;
   userName = "";
 
-  image = new QImage(1000, 1000, QImage::Format_RGB32);
+  image = new QImage(1000, 1000, QImage::Format_ARGB32);
   image->fill(Qt::transparent);
   this->addPixmap(QPixmap::fromImage(*image));
   this->setMinimumRenderSize(1000);
@@ -171,6 +174,7 @@ void GraphicScene::joinedRoom(QString roomName, QString newUserName)
 
   if (th)
   {
+    th->quit();
     delete th;
     th = new Thread(parent, roomName, newUserName, image, iterator, userListImage);
   }
@@ -178,6 +182,7 @@ void GraphicScene::joinedRoom(QString roomName, QString newUserName)
   {
     th = new Thread(parent, roomName, newUserName, image, iterator, userListImage);
   }
+  connect(th, SIGNAL(drawFromServer()), this, SLOT(fillScene()));
 }
 
 void GraphicScene::fillScene()
@@ -215,4 +220,9 @@ void GraphicScene::wheelEvent(QGraphicsSceneWheelEvent* event)
   {
     QGraphicsScene::wheelEvent(event);
   }
+}
+
+void GraphicScene::closeThread()
+{
+  th->quit();
 }
