@@ -5,7 +5,6 @@
 int main(int argc, char* argv[])
 {
   QApplication a(argc, argv);
-  Connected_canvas w;
 
   QRect rect = QRect(a.primaryScreen()->availableGeometry()); // SCREEN SIZE
   std::pair<int, int> resolution(rect.width(), rect.height());
@@ -23,6 +22,7 @@ int main(int argc, char* argv[])
     qss.close();
   }
 
+  Connected_canvas w;
   w.show();
   return a.exec();
 }

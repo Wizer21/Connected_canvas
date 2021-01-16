@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/Connected_canvas">
         <file>files/theme.qss</file>
-        <file>files/IarsV.jpg</file>
+        <file>files/icons/IarsV.jpg</file>
     </qresource>
 </RCC>

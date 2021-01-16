@@ -12,10 +12,18 @@ public:
   }
   void pushResolution(std::pair<int, int> res, int newFontSize);
   void setFontOnWidget(QWidget* widget, double ratio);
+  QPixmap getPixmap(QString key);
+  QImage getImage(QString key);
 
 private:
+  SUtils();
+  void loadPixmaps();
+  QPixmap structPixmap(QString url, int widthRatio, int heightRatio, int baseSize);
+  QImage structImage(QString url, int widthRatio, int heightRatio, int baseSize);
+
   static SUtils* instance;
   std::pair<int, int> resolution;
   int fontSize;
-  SUtils();
+  std::map<QString, QPixmap> pixmapList;
+  std::map<QString, QImage> imageList;
 };

@@ -57,7 +57,7 @@ void Connected_canvas::build()
   viewMain->setScene(sceneMain);
   layoutMain->setColumnStretch(0, 0);
   layoutMain->setColumnStretch(1, 1);
-  viewMain->setFixedSize(1000, 1000);
+  viewMain->setFixedSize(1010, 1010);
 
   // CONNECT TO DATA
   req = new Requester();

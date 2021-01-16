@@ -47,7 +47,7 @@ void Thread::newIteration()
 {
   req->updateRoom(parent, roomName, userName, imageToB64(*userImage), *iterator);
 
-  time->start(100);
+  time->start(500);
 }
 
 void Thread::roomRequest(QString request)
@@ -130,7 +130,6 @@ GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen, bool* isPaint
   image = new QImage(1000, 1000, QImage::Format_ARGB32);
   image->fill(Qt::transparent);
   this->addPixmap(QPixmap::fromImage(*image));
-  this->setMinimumRenderSize(1000);
 }
 
 void GraphicScene::mousePressEvent(QGraphicsSceneMouseEvent* event)

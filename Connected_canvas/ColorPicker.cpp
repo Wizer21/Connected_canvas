@@ -4,8 +4,8 @@ ColorPicker::ColorPicker(QWidget* parent)
   : QLabel(parent)
 {
   this->setMouseTracking(true);
-  image = new QImage(":/Connected_canvas/files/IarsV.jpg");
-  this->setPixmap(QPixmap(":/Connected_canvas/files/IarsV.jpg"));
+  image = new QImage(SUtils::getInstance()->getImage("chroma"));
+  this->setPixmap(SUtils::getInstance()->getPixmap("chroma"));
 }
 
 void ColorPicker::mouseMoveEvent(QMouseEvent* event)
