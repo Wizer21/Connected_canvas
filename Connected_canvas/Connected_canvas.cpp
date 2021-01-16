@@ -6,6 +6,7 @@ Connected_canvas::Connected_canvas(QWidget* parent)
 {
   ui.setupUi(this);
   userName = "";
+  paint = true;
 
   build();
   logIn();
@@ -31,11 +32,11 @@ void Connected_canvas::build()
   QVBoxLayout* layoutArea = new QVBoxLayout(this);
 
   myPen = new QPen();
-  penBuilder = new PenBuilder(this, myPen);
+  penBuilder = new PenBuilder(this, myPen, &paint);
 
   //QWidget* widgetLayers = new QWidget(this);
   QGraphicsView* viewMain = new QGraphicsView(this);
-  sceneMain = new GraphicScene(this, myPen);
+  sceneMain = new GraphicScene(this, myPen, &paint);
 
   this->setCentralWidget(widgetCentral);
   widgetCentral->setLayout(layoutMain);

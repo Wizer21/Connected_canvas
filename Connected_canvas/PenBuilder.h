@@ -7,7 +7,7 @@ class PenBuilder : public QWidget
   Q_OBJECT
 
 public:
-  PenBuilder(QWidget* parent, QPen* pen);
+  PenBuilder(QWidget* parent, QPen* pen, bool* isPainting);
   void setSelecter();
   void setPenSizeFromWheel(int);
 
@@ -17,6 +17,7 @@ public slots:
   void applyPickedLeaved();
   void penSizeChanged(QString);
   void penOpacityChanged(QString);
+  void drawClicked();
 
 private:
   QPen* mainPen;
@@ -25,5 +26,6 @@ private:
   QLabel* labelSelectedColor;
   QLineEdit* setPenSize;
   QLineEdit* setPenOpacity;
+  bool* paint;
   int alpha;
 };

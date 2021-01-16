@@ -1,8 +1,9 @@
 #include "PenBuilder.h"
 
-PenBuilder::PenBuilder(QWidget* parent, QPen* pen)
+PenBuilder::PenBuilder(QWidget* parent, QPen* pen, bool* isPainting)
   : QWidget(parent)
 {
+  paint = isPainting;
   mainPen = pen;
   mainColor = (Qt::black);
   mainColor.setAlpha(255);
@@ -13,7 +14,7 @@ PenBuilder::PenBuilder(QWidget* parent, QPen* pen)
   pen->setCapStyle(Qt::RoundCap);
 
   QGridLayout* mainLayout = new QGridLayout(this);
-  QPushButton* buttonBrushType = new QPushButton("contain brush", this);
+  QPushButton* buttonBrushType = new QPushButton("Draw", this);
   labelHoverColor = new QLabel(this);
   labelSelectedColor = new QLabel(this);
   ColorPicker* picker = new ColorPicker(this);
@@ -43,6 +44,7 @@ PenBuilder::PenBuilder(QWidget* parent, QPen* pen)
 
   setSelecter();
 
+  connect(buttonBrushType, SIGNAL(clicked()), this, SLOT(drawClicked()));
   connect(setPenSize, SIGNAL(textEdited(QString)), this, SLOT(penSizeChanged(QString)));
   connect(setPenOpacity, SIGNAL(textEdited(QString)), this, SLOT(penOpacityChanged(QString)));
   connect(picker, SIGNAL(displayHoverColor(QColor)), this, SLOT(applyHoverColor(QColor)));
@@ -112,4 +114,19 @@ void PenBuilder::penOpacityChanged(QString str)
   alpha = str.toInt();
   mainColor.setAlpha(round((setPenOpacity->text().toDouble() / 100.0) * 255.0));
   mainPen->setColor(mainColor);
+}
+
+void PenBuilder::drawClicked()
+{
+  QPushButton* button = qobject_cast<QPushButton*>(sender());
+  if (*paint)
+  {
+    *paint = false;
+    button->setText("Eraser");
+  }
+  else
+  {
+    *paint = true;
+    button->setText("Draw");
+  }
 }

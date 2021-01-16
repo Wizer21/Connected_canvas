@@ -36,7 +36,7 @@ class GraphicScene : public QGraphicsScene
 {
   Q_OBJECT
 public:
-  GraphicScene(QWidget* parent, QPen* userPen);
+  GraphicScene(QWidget* parent, QPen* userPen, bool* isPainting);
   void joinedRoom(QString roomName, QString userName);
   void closeThread();
 
@@ -57,6 +57,7 @@ private:
   QString userName;
   QWidget* parent;
   QPen* userPen;
+  bool* paint;
   QPointF oldPos;
   QImage* image;
   Thread* th;

@@ -38,6 +38,7 @@ private:
   QLabel* labelPseudo;
   QLabel* labelRoomName;
   QPen* myPen;
+  bool paint;
   PenBuilder* penBuilder;
   QString userName;
 };

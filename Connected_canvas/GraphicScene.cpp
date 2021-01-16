@@ -10,12 +10,13 @@ Thread::Thread(QWidget* newParent, QString newRoomName, QString newUserName, QIm
   userName = newUserName;
   userListImage = &newUserListImage;
 
+  connect(this, &Thread::finished, this, &QObject::deleteLater);
   req = new Requester();
   connect(req, SIGNAL(transfertRequest(QString)), this, SLOT(roomRequest(QString)));
 
   time = new QTimer();
   connect(time, SIGNAL(timeout()), this, SLOT(newIteration()));
-  time->start(500);
+  newIteration();
 
   this->start();
 }
@@ -40,7 +41,7 @@ void Thread::newIteration()
 {
   req->updateRoom(parent, roomName, userName, imageToB64(*userImage), *iterator);
 
-  time->start(500);
+  time->start(250);
 }
 
 void Thread::roomRequest(QString request)
@@ -93,11 +94,12 @@ void Thread::roomRequest(QString request)
   emit drawFromServer();
 }
 
-GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen) // SCENE
+GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen, bool* isPainting) // SCENE
   : QGraphicsScene(new_parent)
 {
   parent = new_parent;
   userPen = new_userPen;
+  paint = isPainting;
   isOldPosNull = true;
   th = nullptr;
   iterator = 0;
@@ -133,6 +135,10 @@ void GraphicScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 void GraphicScene::drawPoint(const QPointF currentPos)
 {
   QPainter painter(image);
+  if (!*paint)
+  {
+    painter.setCompositionMode(QPainter::CompositionMode_Clear);
+  }
   painter.setPen(*userPen);
 
   if (isOldPosNull)
@@ -151,6 +157,10 @@ void GraphicScene::drawPoint(const QPointF currentPos)
 void GraphicScene::drawLine(const QPointF currentPos)
 {
   QPainter painter(image);
+  if (!*paint)
+  {
+    painter.setCompositionMode(QPainter::CompositionMode_Clear);
+  }
   painter.setPen(*userPen);
 
   if (isOldPosNull)
@@ -224,5 +234,9 @@ void GraphicScene::wheelEvent(QGraphicsSceneWheelEvent* event)
 
 void GraphicScene::closeThread()
 {
-  th->quit();
+  if (th)
+  {
+    th->quit();
+    //delete th;
+  }
 }
