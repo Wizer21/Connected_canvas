@@ -3,7 +3,7 @@
 PassWordDialog::PassWordDialog(QWidget* parent, QString roomName, QString password)
   : QDialog(parent)
 {
-
+  this->setAttribute(Qt::WA_DeleteOnClose);
   pass = password;
   room = roomName;
 

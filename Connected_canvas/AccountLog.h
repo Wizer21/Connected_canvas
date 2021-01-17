@@ -37,4 +37,7 @@ private:
   QPushButton* buttonEyeLogValid;
   bool showLog;
   bool showCreate;
+
+  QLabel* labelErrorLog;
+  QLabel* labelErrorCreate;
 };

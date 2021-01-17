@@ -42,4 +42,8 @@ private:
   bool paint;
   PenBuilder* penBuilder;
   QString userName;
+  QWidgetAction* actionFriends;
+  QWidgetAction* actionRooms;
+  QLabel* labelActionFriend;
+  QLabel* labelActionRoom;
 };

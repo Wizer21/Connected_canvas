@@ -49,3 +49,8 @@ void SUtils::setFontOnWidget(QWidget* widget, double ratio)
 {
   widget->setStyleSheet(QString("font-size: %1px;").arg(QString::number(round(fontSize * ratio))));
 }
+
+void SUtils::setFontAndColorOnWidget(QWidget* widget, QString color, double ratio)
+{
+  widget->setStyleSheet(QString("font-size: %1px; color: %2").arg(QString::number(round(fontSize * ratio)), color));
+}

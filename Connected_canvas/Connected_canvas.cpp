@@ -17,9 +17,13 @@ Connected_canvas::Connected_canvas(QWidget* parent)
 void Connected_canvas::build()
 {
   QMenuBar* barMain = new QMenuBar(this);
-  QAction* actionLogIn = new QAction(tr("Login"), this);
-  QAction* actionFriends = new QAction(tr("Friends"), this);
-  QAction* actionRooms = new QAction(tr("Rooms"), this);
+  QMenu* menuMore = new QMenu(tr("More"), this);
+  QWidgetAction* actionLogIn = new QWidgetAction(this);
+  actionFriends = new QWidgetAction(this);
+  actionRooms = new QWidgetAction(this);
+  QLabel* labelActionLog = new QLabel(tr("Login"), this);
+  labelActionFriend = new QLabel(tr("Friends"), this);
+  labelActionRoom = new QLabel(tr("Rooms"), this);
 
   QWidget* widgetCentral = new QWidget(this);
   QGridLayout* layoutMain = new QGridLayout(this);
@@ -40,9 +44,14 @@ void Connected_canvas::build()
   widgetCentral->setLayout(layoutMain);
 
   this->setMenuBar(barMain);
-  barMain->addAction(actionLogIn);
-  barMain->addAction(actionFriends);
-  barMain->addAction(actionRooms);
+  barMain->addMenu(menuMore);
+  actionLogIn->setDefaultWidget(labelActionLog);
+  actionFriends->setDefaultWidget(labelActionFriend);
+  actionRooms->setDefaultWidget(labelActionRoom);
+
+  menuMore->addAction(actionLogIn);
+  menuMore->addAction(actionFriends);
+  menuMore->addAction(actionRooms);
 
   layoutMain->addWidget(widgetRoom, 0, 0);
   widgetRoom->setLayout(layoutRoom);
@@ -59,6 +68,15 @@ void Connected_canvas::build()
   layoutMain->setColumnStretch(0, 0);
   layoutMain->setColumnStretch(1, 1);
   viewMain->setFixedSize(1010, 1010);
+  actionFriends->setEnabled(false);
+  actionRooms->setEnabled(false);
+  labelActionLog->setStyleSheet("QLabel::hover{border-left: 3px solid white}");
+  labelActionFriend->setStyleSheet("color: 292929");
+  labelActionRoom->setStyleSheet("color: 292929");
+  labelActionLog->setContentsMargins(5, 5, 5, 5);
+  labelActionFriend->setContentsMargins(5, 5, 5, 5);
+  labelActionRoom->setContentsMargins(5, 5, 5, 5);
+  labelActionLog->setCursor(Qt::PointingHandCursor);
 
   // CONNECT TO DATA
   req = new Requester();
@@ -116,6 +134,14 @@ void Connected_canvas::displayNewUser(QString newName)
 {
   labelPseudo->setText(newName);
   userName = newName;
+
+  actionFriends->setEnabled(true);
+  actionRooms->setEnabled(true);
+
+  labelActionFriend->setStyleSheet("QLabel::hover{border-left: 3px solid white; color: white;}");
+  labelActionRoom->setStyleSheet("QLabel::hover{border-left: 3px solid white; color: white;}");
+  labelActionFriend->setCursor(Qt::PointingHandCursor);
+  labelActionRoom->setCursor(Qt::PointingHandCursor);
 }
 
 void Connected_canvas::closeEvent(QCloseEvent* event)

@@ -12,6 +12,7 @@ public:
   }
   void pushResolution(std::pair<int, int> res, int newFontSize);
   void setFontOnWidget(QWidget* widget, double ratio);
+  void setFontAndColorOnWidget(QWidget* widget, QString color, double ratio);
   QPixmap getPixmap(QString key);
   QImage getImage(QString key);
 

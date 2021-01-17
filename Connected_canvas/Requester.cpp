@@ -95,7 +95,11 @@ void Requester::leaveRoom(QWidget* parent, QString room, QString user)
   thread->wait();
 }
 
-void Requester::sendLog(QString name)
+void Requester::sendLog(QString request)
 {
-  emit transfertRequest(name);
+  if (request == "fetch_error")
+  {
+    return;
+  }
+  emit transfertRequest(request);
 }

@@ -5,6 +5,7 @@ NewRoomDialog::NewRoomDialog(QWidget* parent)
 {
   showPass = false;
   build();
+  this->setAttribute(Qt::WA_DeleteOnClose);
   this->resize(400, 300);
 }
 

@@ -6,6 +6,7 @@ Friends::Friends(QWidget* parent, QString new_userName)
   userName = new_userName;
   build();
   loadFriends();
+  this->setAttribute(Qt::WA_DeleteOnClose);
   this->resize(500, 500);
 }
 

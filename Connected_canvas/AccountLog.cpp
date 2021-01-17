@@ -14,17 +14,18 @@ AccountLog::AccountLog()
   QWidget* widgetLogTitle = new QWidget(this);
   QGridLayout* layoutLog = new QGridLayout(this);
   QLabel* labelLogTitle = new QLabel(tr("Login"), this);
-  QLabel* labelLogPseudo = new QLabel(tr("Pseudo"), this);
+  QLabel* labelLogPseudo = new QLabel(tr("Nickname"), this);
   lineEditLogPseudo = new QLineEdit(this);
   QLabel* labelLogPassword = new QLabel(tr("Password"), this);
   lineEditLogPassword = new QLineEdit(this);
   buttonPassLogIn = new QPushButton(this);
+  labelErrorLog = new QLabel(this);
   QPushButton* buttonLogValidate = new QPushButton(tr("Validate"), this);
 
   QWidget* widgetNewTitle = new QWidget(this);
   QGridLayout* layoutNew = new QGridLayout(this);
   QLabel* labelNewTitle = new QLabel(tr("New Account"), this);
-  QLabel* labelNewPseudo = new QLabel(tr("Pseudo"), this);
+  QLabel* labelNewPseudo = new QLabel(tr("Nickname"), this);
   lineEditNewPseudo = new QLineEdit(this);
   QLabel* labelNewPassword = new QLabel(tr("Password"), this);
   lineEditNewPassword = new QLineEdit(this);
@@ -32,6 +33,7 @@ AccountLog::AccountLog()
   QLabel* labelNewPasswordbis = new QLabel(tr("Confirm Password"), this);
   lineEditNewPasswordbis = new QLineEdit(this);
   buttonEyeLogValid = new QPushButton(this);
+  labelErrorCreate = new QLabel(this);
   QPushButton* buttonNewValidate = new QPushButton(tr("Validate"), this);
 
   this->setLayout(layoutMain);
@@ -47,7 +49,8 @@ AccountLog::AccountLog()
   layoutLog->addWidget(labelLogPassword, 3, 0, 1, 2);
   layoutLog->addWidget(lineEditLogPassword, 4, 0);
   layoutLog->addWidget(buttonPassLogIn, 4, 1);
-  layoutLog->addWidget(buttonLogValidate, 5, 0, 1, 2);
+  layoutLog->addWidget(labelErrorLog, 5, 0, 1, 2);
+  layoutLog->addWidget(buttonLogValidate, 6, 0, 1, 2);
 
   widgetNewTitle->setLayout(layoutNew);
   layoutNew->addWidget(labelNewTitle, 0, 0, 1, 2);
@@ -59,7 +62,8 @@ AccountLog::AccountLog()
   layoutNew->addWidget(labelNewPasswordbis, 5, 0, 1, 2);
   layoutNew->addWidget(lineEditNewPasswordbis, 6, 0);
   layoutNew->addWidget(buttonEyeLogValid, 6, 1);
-  layoutNew->addWidget(buttonNewValidate, 7, 0, 1, 2);
+  layoutNew->addWidget(labelErrorCreate, 7, 0, 1, 2);
+  layoutNew->addWidget(buttonNewValidate, 8, 0, 1, 2);
 
   widgetStack->addWidget(widgetLogTitle);
   widgetStack->addWidget(widgetNewTitle);
@@ -81,6 +85,8 @@ AccountLog::AccountLog()
   buttonEyeLogPass->setIcon(QIcon(SUtils::getInstance()->getPixmap("hide")));
   buttonEyeLogValid->setIcon(QIcon(SUtils::getInstance()->getPixmap("hide")));
   buttonPassLogIn->setObjectName("0");
+  SUtils::getInstance()->setFontAndColorOnWidget(labelErrorLog, "#f44336", 0.5);
+  SUtils::getInstance()->setFontAndColorOnWidget(labelErrorCreate, "#f44336", 0.5);
 
   connect(buttonPassLogIn, SIGNAL(clicked()), this, SLOT(toggleEcho()));
   connect(buttonEyeLogPass, SIGNAL(clicked()), this, SLOT(toggleEcho()));
@@ -99,8 +105,24 @@ void AccountLog::newAccountClicked()
   QString pass = lineEditNewPassword->text();
   QString passBis = lineEditNewPasswordbis->text();
 
-  if (name.isEmpty() || pass.isEmpty() || passBis.isEmpty() || pass != passBis)
+  if (name.isEmpty())
   {
+    labelErrorCreate->setText(tr("Nickname not referenced"));
+    return;
+  }
+  if (pass.isEmpty())
+  {
+    labelErrorCreate->setText(tr("Password not referenced"));
+    return;
+  }
+  if (passBis.isEmpty())
+  {
+    labelErrorCreate->setText(tr("Validator not referenced"));
+    return;
+  }
+  if (pass != passBis)
+  {
+    labelErrorCreate->setText(tr("Password not matching"));
     return;
   }
 
@@ -113,8 +135,14 @@ void AccountLog::loginClicked()
   QString name = lineEditLogPseudo->text();
   QString pass = lineEditLogPassword->text();
 
-  if (name.isEmpty() || pass.isEmpty())
+  if (name.isEmpty())
   {
+    labelErrorLog->setText(tr("Nickname not referenced"));
+    return;
+  }
+  if (pass.isEmpty())
+  {
+    labelErrorLog->setText(tr("Password not referenced"));
     return;
   }
 
@@ -125,8 +153,9 @@ void AccountLog::loginClicked()
 void AccountLog::newAccountCreated(QString request)
 {
   request.replace("\n", "");
-  if (request != "done")
+  if (request == "Nickname not avaible")
   {
+    labelErrorCreate->setText(tr("Nickname not avaible"));
     return;
   }
   emit transfertCurrentUser(lineEditNewPseudo->text());
@@ -138,6 +167,7 @@ void AccountLog::logInRequest(QString request)
   request.replace("\n", "");
   if (request == "false")
   {
+    labelErrorLog->setText(tr("Wrong nickname or password"));
     return;
   }
   emit transfertCurrentUser(lineEditLogPseudo->text());
