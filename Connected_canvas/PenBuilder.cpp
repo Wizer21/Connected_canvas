@@ -42,8 +42,6 @@ PenBuilder::PenBuilder(QWidget* parent, QPen* pen, bool* isPainting)
   setPenSize->setValidator(&QIntValidator());
   setPenOpacity->setValidator(&QIntValidator(0, 100));
 
-  setSelecter();
-
   connect(buttonBrushType, SIGNAL(clicked()), this, SLOT(drawClicked()));
   connect(setPenSize, SIGNAL(textEdited(QString)), this, SLOT(penSizeChanged(QString)));
   connect(setPenOpacity, SIGNAL(textEdited(QString)), this, SLOT(penOpacityChanged(QString)));

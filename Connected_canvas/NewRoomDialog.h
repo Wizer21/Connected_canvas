@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "Requester.h"
+#include "SUtils.h"
 
 class NewRoomDialog : public QDialog
 {
@@ -13,6 +14,7 @@ public slots:
   void setIsRoomPublic(int);
   void validButtonClicked();
   void applyRequest(QString);
+  void toggleShow();
 
 signals:
   void newCurrentRoom(QString);
@@ -24,4 +26,6 @@ private:
   QLabel* labelPassword;
   QLineEdit* lineeditPassword;
   Requester* req;
+  QPushButton* buttonShow;
+  bool showPass;
 };

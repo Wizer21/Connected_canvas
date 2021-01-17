@@ -11,6 +11,7 @@ Connected_canvas::Connected_canvas(QWidget* parent)
   build();
   logIn();
   this->resize(1500, 1000);
+  penBuilder->setSelecter();
 }
 
 void Connected_canvas::build()

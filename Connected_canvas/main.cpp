@@ -5,6 +5,7 @@
 int main(int argc, char* argv[])
 {
   QApplication a(argc, argv);
+  QApplication::setAttribute(Qt::AA_DisableWindowContextHelpButton);
 
   QRect rect = QRect(a.primaryScreen()->availableGeometry()); // SCREEN SIZE
   std::pair<int, int> resolution(rect.width(), rect.height());

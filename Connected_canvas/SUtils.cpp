@@ -16,9 +16,13 @@ void SUtils::pushResolution(std::pair<int, int> res, int newFontSize)
 void SUtils::loadPixmaps()
 {
   int bSize = round(resolution.first / 45);
-  pixmapList.insert({"chroma", structPixmap(":/Connected_canvas/files/icons/IarsV.jpg", 4, 4, bSize)});
+  pixmapList.insert({"chroma", structPixmap(":/Connected_canvas/files/icons/IarsV.jpg", 6, 6, bSize)});
+  pixmapList.insert({"show", structPixmap(":/Connected_canvas/files/icons/eyelight.png", 6, 6, bSize)});
+  pixmapList.insert({"hide", structPixmap(":/Connected_canvas/files/icons/closeeyelight.png", 6, 6, bSize)});
+  pixmapList.insert({"showOFF", structPixmap(":/Connected_canvas/files/icons/eyelightOFF.png", 6, 6, bSize)});
+  pixmapList.insert({"hideOFF", structPixmap(":/Connected_canvas/files/icons/closeeyelightOFF.png", 6, 6, bSize)});
 
-  imageList.insert({"chroma", structImage(":/Connected_canvas/files/icons/IarsV.jpg", 4, 4, bSize)});
+  imageList.insert({"chroma", structImage(":/Connected_canvas/files/icons/IarsV.jpg", 6, 6, bSize)});
 }
 
 QImage SUtils::structImage(QString url, int widthRatio, int heightRatio, int baseSize)

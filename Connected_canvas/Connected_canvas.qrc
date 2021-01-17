@@ -2,5 +2,9 @@
     <qresource prefix="/Connected_canvas">
         <file>files/theme.qss</file>
         <file>files/icons/IarsV.jpg</file>
+        <file>files/icons/closeeyelight.png</file>
+        <file>files/icons/eyelight.png</file>
+        <file>files/icons/closeeyelightOFF.png</file>
+        <file>files/icons/eyelightOFF.png</file>
     </qresource>
 </RCC>

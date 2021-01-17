@@ -16,6 +16,7 @@ public slots:
   void newAccountCreated(QString);
   void logInRequest(QString);
   void pageClicked();
+  void toggleEcho();
 
 signals:
   void transfertCurrentUser(QString);
@@ -30,4 +31,10 @@ private:
   QLineEdit* lineEditNewPseudo;
   QLineEdit* lineEditNewPassword;
   QLineEdit* lineEditNewPasswordbis;
+
+  QPushButton* buttonPassLogIn;
+  QPushButton* buttonEyeLogPass;
+  QPushButton* buttonEyeLogValid;
+  bool showLog;
+  bool showCreate;
 };
