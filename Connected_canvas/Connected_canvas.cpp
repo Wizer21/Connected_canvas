@@ -38,7 +38,7 @@ void Connected_canvas::build()
   penBuilder = new PenBuilder(this, myPen, &paint);
 
   QGraphicsView* viewMain = new QGraphicsView(this);
-  sceneMain = new GraphicScene(this, myPen, &paint, layers);
+  sceneMain = new GraphicScene(this, myPen, &paint, layers, viewMain);
 
   this->setCentralWidget(widgetCentral);
   widgetCentral->setLayout(layoutMain);
@@ -67,6 +67,9 @@ void Connected_canvas::build()
   viewMain->setScene(sceneMain);
   layoutMain->setColumnStretch(0, 0);
   layoutMain->setColumnStretch(1, 1);
+  layoutMain->setSpacing(0);
+  layoutMain->setContentsMargins(0, 0, 0, 0);
+
   viewMain->setFixedSize(1010, 1010);
   actionFriends->setEnabled(false);
   actionRooms->setEnabled(false);
@@ -77,11 +80,16 @@ void Connected_canvas::build()
   labelActionFriend->setContentsMargins(5, 5, 5, 5);
   labelActionRoom->setContentsMargins(5, 5, 5, 5);
   labelActionLog->setCursor(Qt::PointingHandCursor);
+  menuMore->setContentsMargins(0, 0, 0, 0);
+  menuMore->setStyleSheet("padding: 0px;");
+  this->setStyleSheet("background-color: #212121;");
+  viewMain->setStyleSheet("border: 0px solid white; background-color: #161616");
 
   // CONNECT TO DATA
   req = new Requester();
   connect(req, SIGNAL(transfertLog(QString)), this, SLOT(setName(QString)));
 
+  connect(penBuilder, SIGNAL(penSizeChanged()), this, SLOT(updateCursorOnPenSize()));
   connect(actionLogIn, SIGNAL(triggered()), this, SLOT(logInTriggered()));
   connect(actionFriends, SIGNAL(triggered()), this, SLOT(friendsTriggered()));
   connect(actionRooms, SIGNAL(triggered()), this, SLOT(roomsTriggered()));
@@ -163,4 +171,9 @@ void Connected_canvas::joinedRoom(QString newRoomName)
 void Connected_canvas::newPenSize(int val)
 {
   penBuilder->setPenSizeFromWheel(val);
+}
+
+void Connected_canvas::updateCursorOnPenSize()
+{
+  sceneMain->drawCursor();
 }

@@ -15,13 +15,15 @@ public:
   void setFontAndColorOnWidget(QWidget* widget, QString color, double ratio);
   QPixmap getPixmap(QString key);
   QImage getImage(QString key);
+  void setIconOnButton(QPushButton* button, QString key, double ratioWidth, double ratioHeight);
 
 private:
   SUtils();
   void loadPixmaps();
-  QPixmap structPixmap(QString url, int widthRatio, int heightRatio, int baseSize);
-  QImage structImage(QString url, int widthRatio, int heightRatio, int baseSize);
+  QPixmap structPixmap(QString url, double widthRatio, double heightRatio);
+  QImage structImage(QString url, double widthRatio, double heightRatio);
 
+  int bSize;
   static SUtils* instance;
   std::pair<int, int> resolution;
   int fontSize;

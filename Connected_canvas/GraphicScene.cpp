@@ -111,7 +111,7 @@ void Thread::roomRequest(QString request)
   emit drawFromServer();
 }
 
-GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen, bool* isPainting, LayerList* newLayerList) // SCENE
+GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen, bool* isPainting, LayerList* newLayerList, QGraphicsView* newView) // SCENE
   : QGraphicsScene(new_parent)
 {
   parent = new_parent;
@@ -126,10 +126,29 @@ GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen, bool* isPaint
   roomName = "";
   userName = "";
   req = new Requester();
+  view = newView;
 
+  drawCursor();
   image = new QImage(1000, 1000, QImage::Format_ARGB32);
   image->fill(Qt::transparent);
   this->addPixmap(QPixmap::fromImage(*image));
+}
+
+void GraphicScene::drawCursor()
+{
+  int width = userPen->width();
+
+  QPen pen(Qt::gray);
+  pen.setWidth(2);
+  QPixmap pix(round(width * 1.1), round(width * 1.1));
+  pix.fill(Qt::transparent);
+  QPainter paint(&pix);
+  paint.setPen(pen);
+
+  paint.drawEllipse(0, 0, width, width);
+
+  QCursor cursor = (pix);
+  view->setCursor(cursor);
 }
 
 void GraphicScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
@@ -262,6 +281,7 @@ void GraphicScene::wheelEvent(QGraphicsSceneWheelEvent* event)
   {
     QGraphicsScene::wheelEvent(event);
   }
+  drawCursor();
 }
 
 void GraphicScene::closeThread()

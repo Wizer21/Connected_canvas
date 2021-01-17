@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "ColorPicker.h"
+#include "SUtils.h"
 
 class PenBuilder : public QWidget
 {
@@ -15,17 +16,20 @@ public slots:
   void applyHoverColor(QColor);
   void applySelectedColor(QColor);
   void applyPickedLeaved();
-  void penSizeChanged(QString);
-  void penOpacityChanged(QString);
+  void penSizeChanged(int);
+  void penOpacityChanged(int);
   void drawClicked();
+
+signals:
+  void penSizeChanged();
 
 private:
   QPen* mainPen;
   QColor mainColor;
   QLabel* labelHoverColor;
   QLabel* labelSelectedColor;
-  QLineEdit* setPenSize;
-  QLineEdit* setPenOpacity;
+  QSpinBox* setPenSize;
+  QSpinBox* setPenOpacity;
   bool* paint;
   int alpha;
 };

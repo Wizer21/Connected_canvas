@@ -11,10 +11,6 @@ QLabel {
     background-color: transparent;
 }
 
-QMenu{
-  padding: 0px;
-}
-
 QPushButton {
     background-color: #212121;
     padding: 10px;

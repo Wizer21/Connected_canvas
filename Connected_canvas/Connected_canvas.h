@@ -25,6 +25,7 @@ public slots:
   void displayNewUser(QString);
   void joinedRoom(QString);
   void newPenSize(int);
+  void updateCursorOnPenSize();
 
 protected:
   void closeEvent(QCloseEvent* event) override;

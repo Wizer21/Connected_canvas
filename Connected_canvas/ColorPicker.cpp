@@ -6,6 +6,7 @@ ColorPicker::ColorPicker(QWidget* parent)
   this->setMouseTracking(true);
   image = new QImage(SUtils::getInstance()->getImage("chroma"));
   this->setPixmap(SUtils::getInstance()->getPixmap("chroma"));
+  this->setCursor(Qt::PointingHandCursor);
 }
 
 void ColorPicker::mouseMoveEvent(QMouseEvent* event)

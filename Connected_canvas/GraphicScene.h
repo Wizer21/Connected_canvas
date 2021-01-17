@@ -39,9 +39,10 @@ class GraphicScene : public QGraphicsScene
 {
   Q_OBJECT
 public:
-  GraphicScene(QWidget* parent, QPen* userPen, bool* isPainting, LayerList* layerList);
+  GraphicScene(QWidget* parent, QPen* userPen, bool* isPainting, LayerList* layerList, QGraphicsView* view);
   void joinedRoom(QString roomName, QString userName);
   void closeThread();
+  void drawCursor();
 
 public slots:
   void fillScene();
@@ -71,6 +72,7 @@ private:
   Thread* th;
   bool isOldPosNull;
   std::map<QString, QImage> userListImage;
+  QGraphicsView* view;
 
   void drawPoint(const QPointF currentPos);
   void drawLine(const QPointF currentPos);

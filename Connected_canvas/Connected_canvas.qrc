@@ -6,5 +6,9 @@
         <file>files/icons/eyelight.png</file>
         <file>files/icons/closeeyelightOFF.png</file>
         <file>files/icons/eyelightOFF.png</file>
+        <file>files/icons/brush.png</file>
+        <file>files/icons/eraser.png</file>
+        <file>files/icons/opacity.png</file>
+        <file>files/icons/pencil-ruler.png</file>
     </qresource>
 </RCC>
