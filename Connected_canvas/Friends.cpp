@@ -6,7 +6,7 @@ Friends::Friends(QWidget* parent, QString new_userName)
   userName = new_userName;
   build();
   loadFriends();
-  this->setAttribute(Qt::WA_DeleteOnClose);
+  //this->setAttribute(Qt::WA_DeleteOnClose);
   this->resize(500, 500);
 }
 
@@ -21,6 +21,7 @@ void Friends::build()
   mainLayout->addWidget(area);
   area->setWidget(widgetArea);
   widgetArea->setLayout(layoutArea);
+  this->setWindowTitle(tr("Friend list"));
 
   layoutArea->setAlignment(Qt::AlignTop);
   area->setWidgetResizable(true);

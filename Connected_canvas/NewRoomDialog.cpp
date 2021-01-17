@@ -33,12 +33,17 @@ void NewRoomDialog::build()
   layoutMain->addWidget(buttonShow, 5, 1);
   layoutMain->addWidget(buttonValidate, 6, 0, 1, 2);
 
+  this->setWindowTitle(tr("Room creation"));
   layoutMain->setAlignment(Qt::AlignTop);
   lineeditPassword->setDisabled(true);
   lineeditPassword->setStyleSheet("border: 1px solid #292929; color: #292929;");
   labelPassword->setStyleSheet("color: #292929;");
   buttonShow->setIcon(SUtils::getInstance()->getPixmap("hideOFF"));
   lineeditPassword->setEchoMode(QLineEdit::Password);
+  checkPublicRoom->setCursor(Qt::PointingHandCursor);
+  buttonValidate->setCursor(Qt::PointingHandCursor);
+  buttonShow->setCursor(Qt::PointingHandCursor);
+  SUtils::getInstance()->setFontOnWidget(labelTitle, 1.5);
 
   connect(buttonShow, SIGNAL(clicked()), this, SLOT(toggleShow()));
   connect(checkPublicRoom, SIGNAL(stateChanged(int)), this, SLOT(setIsRoomPublic(int)));

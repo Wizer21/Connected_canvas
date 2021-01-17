@@ -25,5 +25,6 @@ int main(int argc, char* argv[])
 
   Connected_canvas w;
   w.show();
+  w.updateUi();
   return a.exec();
 }

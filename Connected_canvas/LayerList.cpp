@@ -108,12 +108,12 @@ void LayerList::toggleVisible()
       if (pair.second)
       {
         pair.second = false;
-        button->setText("Hide");
+        SUtils::getInstance()->setIconOnButton(button, "hide", 1, 1);
       }
       else
       {
         pair.second = true;
-        button->setText("Show");
+        SUtils::getInstance()->setIconOnButton(button, "show", 1, 1);
       }
       updateDisplayedList();
       return;
@@ -146,20 +146,27 @@ void LayerList::reBuild()
     buttonUp->setObjectName(pair.first);
     buttonDown->setObjectName(pair.first);
 
+    buttonShow->setCursor(Qt::PointingHandCursor);
+    buttonUp->setCursor(Qt::PointingHandCursor);
+    buttonDown->setCursor(Qt::PointingHandCursor);
+
     if (pair.second)
     {
-      buttonShow->setText("Show");
+      SUtils::getInstance()->setIconOnButton(buttonShow, "show", 1, 1);
     }
     else
     {
-      buttonShow->setText("Hide");
+      SUtils::getInstance()->setIconOnButton(buttonShow, "hide", 1, 1);
     }
 
     layoutUser->setAlignment(Qt::AlignTop);
 
-    buttonShow->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    buttonUp->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    buttonDown->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    buttonShow->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+    widgetUser->setStyleSheet("background-color: #161616;");
+    buttonShow->setStyleSheet("background-color: #212121;");
+    buttonUp->setStyleSheet("background-color: #212121;");
+    buttonDown->setStyleSheet("background-color: #212121;");
 
     connect(buttonShow, SIGNAL(clicked()), this, SLOT(toggleVisible()));
     connect(buttonUp, SIGNAL(clicked()), this, SLOT(userUp()));

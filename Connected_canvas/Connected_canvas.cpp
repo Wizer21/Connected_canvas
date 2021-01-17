@@ -9,9 +9,7 @@ Connected_canvas::Connected_canvas(QWidget* parent)
   paint = true;
 
   build();
-  logIn();
   this->resize(1500, 1000);
-  penBuilder->setSelecter();
 }
 
 void Connected_canvas::build()
@@ -30,8 +28,8 @@ void Connected_canvas::build()
 
   QWidget* widgetRoom = new QWidget(this);
   QGridLayout* layoutRoom = new QGridLayout(this);
-  labelPseudo = new QLabel("Offline", this);
-  labelRoomName = new QLabel("roomid", this);
+  labelPseudo = new QLabel(tr("Offline"), this);
+  labelRoomName = new QLabel(this);
   LayerList* layers = new LayerList(this);
 
   myPen = new QPen();
@@ -96,22 +94,6 @@ void Connected_canvas::build()
   connect(sceneMain, SIGNAL(penSizeChanged(int)), this, SLOT(newPenSize(int)));
 }
 
-void Connected_canvas::logIn()
-{
-  auto logFile{QCoreApplication::applicationDirPath() + QDir::separator() + "log.json"};
-  if (QFile(logFile).exists())
-  {
-    QJsonDocument jsonDoc(QJsonDocument::fromJson(logFile.toUtf8()));
-    QJsonObject jsonObj = jsonDoc.object();
-
-    //if (jsonObj.contains("pseudo") && jsonObj.contains("pass"))
-    //{
-    //  jsonObj.langue = jsonObj["langue"].toString();
-    //  jsonObj.theme = jsonObj["theme"].toString();
-    //}
-  }
-}
-
 void Connected_canvas::setName(QString newName)
 {
   labelPseudo->setText(newName);
@@ -133,7 +115,7 @@ void Connected_canvas::friendsTriggered()
 
 void Connected_canvas::roomsTriggered()
 {
-  Rooms* rooms = new Rooms(this);
+  Rooms* rooms = new Rooms(this, labelRoomName->text());
   connect(rooms, SIGNAL(sendNewRoom(QString)), this, SLOT(joinedRoom(QString)));
   rooms->exec();
 }
@@ -154,8 +136,6 @@ void Connected_canvas::displayNewUser(QString newName)
 
 void Connected_canvas::closeEvent(QCloseEvent* event)
 {
-  //QMessageBox box(QMessageBox::NoIcon, " ", tr("Disconnecting...\nThis can take few seconds."), QMessageBox::NoButton, this, Qt::Dialog);
-  //box.show();
   sceneMain->closeThread(); // WHEN PROGROM READY, THIS WILL LOGOUT FROM THE CURRENT ROOM
   this->hide();
   qApp->processEvents();
@@ -176,4 +156,9 @@ void Connected_canvas::newPenSize(int val)
 void Connected_canvas::updateCursorOnPenSize()
 {
   sceneMain->drawCursor();
+}
+
+void Connected_canvas::updateUi()
+{
+  penBuilder->setSelecter();
 }

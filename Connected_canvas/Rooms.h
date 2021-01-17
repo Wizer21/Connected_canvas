@@ -9,7 +9,7 @@ class Rooms : public QDialog
   Q_OBJECT
 
 public:
-  Rooms(QWidget* parent);
+  Rooms(QWidget* parent, QString roomName);
 
 public slots:
   void newRoomClicked();
@@ -21,7 +21,7 @@ signals:
   void sendNewRoom(QString);
 
 private:
-  void build();
+  void build(QString roomName);
   Requester* req;
   QLabel* currentRoom;
   QVBoxLayout* layoutArea;

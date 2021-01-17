@@ -140,7 +140,7 @@ void GraphicScene::drawCursor()
 
   QPen pen(Qt::gray);
   pen.setWidth(2);
-  QPixmap pix(round(width * 1.1), round(width * 1.1));
+  QPixmap pix(width, width);
   pix.fill(Qt::transparent);
   QPainter paint(&pix);
   paint.setPen(pen);

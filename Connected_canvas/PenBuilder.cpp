@@ -78,6 +78,7 @@ void PenBuilder::setSelecter()
 
 void PenBuilder::applyHoverColor(QColor color)
 {
+  color.setAlpha(round((alpha / 100.0) * 255.0));
   QPixmap pix(labelHoverColor->size());
   pix.fill(color);
   labelHoverColor->setPixmap(pix);

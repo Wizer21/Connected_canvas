@@ -1,17 +1,17 @@
 #include "Rooms.h"
 
-Rooms::Rooms(QWidget* parent)
+Rooms::Rooms(QWidget* parent, QString roomName)
   : QDialog(parent)
 {
-  build();
+  build(roomName);
   this->resize(500, 500);
 }
 
-void Rooms::build()
+void Rooms::build(QString roomName)
 {
   QVBoxLayout* layout = new QVBoxLayout(this);
-  QLabel* title = new QLabel("Rooms", this);
-  currentRoom = new QLabel("Current room: None", this);
+  QLabel* title = new QLabel(tr("Room list"), this);
+  currentRoom = new QLabel(this);
   QScrollArea* area = new QScrollArea(this);
   QWidget* widgetArea = new QWidget(this);
   layoutArea = new QVBoxLayout(this);
@@ -28,6 +28,18 @@ void Rooms::build()
 
   layoutArea->setAlignment(Qt::AlignTop);
   area->setWidgetResizable(true);
+  SUtils::getInstance()->setFontOnWidget(title, 1.5);
+  buttonNewRoom->setCursor(Qt::PointingHandCursor);
+  this->setWindowTitle(tr("Room list"));
+
+  if (roomName != "")
+  {
+    currentRoom->setText(QString("Current room: %1").arg(roomName));
+  }
+  else
+  {
+    currentRoom->setText("Current room: None");
+  }
 
   connect(buttonNewRoom, SIGNAL(clicked()), this, SLOT(newRoomClicked()));
 
@@ -47,6 +59,7 @@ void Rooms::setCurrentRoom(QString roomName)
 {
   currentRoom->setText(roomName);
   emit sendNewRoom(roomName);
+  this->close();
 }
 
 void Rooms::setRoomList(QString request)
@@ -63,8 +76,9 @@ void Rooms::setRoomList(QString request)
 
     layoutArea->addLayout(layout);
     layout->addWidget(labelRoomName, Qt::AlignLeft);
-    layout->addWidget(labelIsLock, Qt::AlignLeft);
+    layout->addWidget(labelIsLock, Qt::AlignRight);
     layout->addWidget(buttonJoin, Qt::AlignRight);
+    buttonJoin->setCursor(Qt::PointingHandCursor);
 
     QString password = jsonObj.value(room).toString();
 

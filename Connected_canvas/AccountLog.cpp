@@ -87,6 +87,13 @@ AccountLog::AccountLog()
   buttonPassLogIn->setObjectName("0");
   SUtils::getInstance()->setFontAndColorOnWidget(labelErrorLog, "#f44336", 0.5);
   SUtils::getInstance()->setFontAndColorOnWidget(labelErrorCreate, "#f44336", 0.5);
+  this->setWindowTitle(tr("Connection"));
+
+  buttonLogValidate->setCursor(Qt::PointingHandCursor);
+  buttonNewValidate->setCursor(Qt::PointingHandCursor);
+  buttonPassLogIn->setCursor(Qt::PointingHandCursor);
+  buttonEyeLogPass->setCursor(Qt::PointingHandCursor);
+  buttonEyeLogValid->setCursor(Qt::PointingHandCursor);
 
   connect(buttonPassLogIn, SIGNAL(clicked()), this, SLOT(toggleEcho()));
   connect(buttonEyeLogPass, SIGNAL(clicked()), this, SLOT(toggleEcho()));

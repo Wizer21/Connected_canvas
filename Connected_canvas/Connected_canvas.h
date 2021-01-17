@@ -16,6 +16,7 @@ class Connected_canvas : public QMainWindow
 
 public:
   Connected_canvas(QWidget* parent = Q_NULLPTR);
+  void updateUi();
 
 public slots:
   void setName(QString);
@@ -32,7 +33,6 @@ protected:
 
 private:
   void build();
-  void logIn();
   Ui_Connected_canvasClass ui;
 
   GraphicScene* sceneMain;
