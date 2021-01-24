@@ -10,14 +10,12 @@ Thread::Thread(QWidget* newParent, QString newRoomName, QString newUserName, QIm
   userName = newUserName;
   userListImage = &newUserListImage;
   layerList = newLayerList;
+  request = "";
+  listChanged = false;
 
-  connect(this, &Thread::finished, this, &QObject::deleteLater);
+  connect(this, SIGNAL(finished()), this, SLOT(loopThread()));
   req = new Requester();
-  connect(req, SIGNAL(transfertRequest(QString)), this, SLOT(roomRequest(QString)));
-
-  time = new QTimer();
-  connect(time, SIGNAL(timeout()), this, SLOT(newIteration()));
-  newIteration();
+  connect(req, SIGNAL(transfertRequest(QString)), this, SLOT(getRequest(QString)));
 
   this->start();
 }
@@ -33,30 +31,34 @@ QString Thread::imageToB64(QImage image)
 
 QImage Thread::b64ToImage(char* base64Array)
 {
-  QImage img = QImage::fromData(QByteArray::fromBase64(base64Array));
-  //img.fill(Qt::transparent);
-  return img;
+  return QImage::fromData(QByteArray::fromBase64(base64Array));
 }
 
-void Thread::stopClock()
-{
-  disconnect(time, SIGNAL(timeout()), nullptr, nullptr);
-}
-
-void Thread::newIteration()
+void Thread::loopThread()
 {
   req->updateRoom(parent, roomName, userName, imageToB64(*userImage), *iterator);
-
-  time->start(500);
 }
 
-void Thread::roomRequest(QString request)
+void Thread::getRequest(QString newRequest)
+{
+  request = newRequest;
+
+  if (listChanged)
+  {
+    layerList->reBuild();
+  }
+  emit drawFromServer();
+
+  this->start();
+}
+
+void Thread::run()
 {
   QJsonObject jsonObj((QJsonDocument::fromJson(request.toUtf8()).object()));
   QStringList newUsers = jsonObj.keys();
   QStringList trash;
 
-  bool userListChanged = false;
+  listChanged = false;
 
   int sizeList = int(userListIterator.size());
   for (int i = 0; i < sizeList; i++) // FOR EVERY STOCKED PLAYERS
@@ -81,11 +83,10 @@ void Thread::roomRequest(QString request)
   {
     if (userListImage->count(user) == 0) // IF ONE ISN'T IN OLD LIST
     {
-      userListChanged = true;
+      listChanged = true;
       layerList->newUser(user);
       userListIterator.push_back(std::pair<QString, int>(user, 0)); // CREATE NEW USER
-      QImage img = b64ToImage(jsonObj.value(user).toObject().value("map").toString().toUtf8().data());
-      userListImage->insert(std::pair<QString, QImage>(user, img));
+      userListImage->insert(std::pair<QString, QImage>(user, b64ToImage(jsonObj.value(user).toObject().value("map").toString().toUtf8().data())));
     }
   }
   for (const QString& userToDelete : trash) // DELETES USERS FROM TRASH
@@ -95,20 +96,14 @@ void Thread::roomRequest(QString request)
     {
       if (userListIterator.at(i).first == userToDelete)
       {
-        userListChanged = true;
         layerList->leavedUser(userListIterator.at(i).first);
         userListIterator.erase(userListIterator.begin() + i);
       }
     }
     userListImage->erase(userToDelete);
+    listChanged = true;
   }
-
-  if (userListChanged)
-  {
-    layerList->reBuild();
-  }
-
-  emit drawFromServer();
+  sleep(0.5);
 }
 
 GraphicScene::GraphicScene(QWidget* new_parent, QPen* new_userPen, bool* isPainting, LayerList* newLayerList, QGraphicsView* newView) // SCENE
@@ -190,7 +185,6 @@ void GraphicScene::drawPoint(const QPointF currentPos)
   isOldPosNull = false;
 
   iterator++;
-  update();
   fillScene();
 }
 
@@ -212,7 +206,6 @@ void GraphicScene::drawLine(const QPointF currentPos)
   isOldPosNull = false;
 
   iterator++;
-  update();
   fillScene();
 }
 
@@ -220,7 +213,6 @@ void GraphicScene::joinedRoom(QString newRoomName, QString newUserName)
 {
   if (th)
   {
-    th->stopClock();
     th->quit();
     req->leaveRoom(parent, roomName, userName);
     userListImage.clear();
@@ -238,12 +230,14 @@ void GraphicScene::joinedRoom(QString newRoomName, QString newUserName)
 
 void GraphicScene::fillScene()
 {
+  qDebug() << "test1";
   this->clear();
 
   int sizeList = int(sortedLayers->size());
   if (!online)
   {
     this->addPixmap(QPixmap::fromImage(*image));
+    qDebug() << "test2";
     return;
   }
 
@@ -258,6 +252,7 @@ void GraphicScene::fillScene()
       this->addPixmap(QPixmap::fromImage(userListImage.at(sortedLayers->at(i))));
     }
   }
+  qDebug() << "test2";
 }
 
 void GraphicScene::wheelEvent(QGraphicsSceneWheelEvent* event)

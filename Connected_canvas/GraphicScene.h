@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "Requester.h"
 #include "LayerList.h"
+#include "QDebug"
 
 class Thread : public QThread
 {
@@ -9,11 +10,13 @@ class Thread : public QThread
 
 public:
   Thread(QWidget* parent, QString roomName, QString userName, QImage* image, int& iterator, std::map<QString, QImage>& userListImage, LayerList* layerList);
-  void stopClock();
 
 public slots:
-  void roomRequest(QString);
-  void newIteration();
+  void getRequest(QString);
+  void loopThread();
+
+protected:
+  void run() override;
 
 signals:
   void drawFromServer();
@@ -29,7 +32,8 @@ private:
   Requester* req;
   int* iterator;
   QImage* userImage;
-  QTimer* time;
+  QString request;
+  bool listChanged;
 
   std::vector<std::pair<QString, int>> userListIterator;
   std::map<QString, QImage>* userListImage;
